@@ -9,7 +9,7 @@ define("PROTOCOLO","http");
 
 
 $pdo = new PDO('mysql:host=' . HOST ,  USER, PASS);
-$pdo->query("DROP TABLE IF EXISTS VEGAN");
+$pdo->query("DROP DATABASE VEGAN");
 $pdo->query("CREATE DATABASE IF NOT EXISTS VEGAN");
 
 $pdo = new pdo('mysql:host=' . HOST . ';dbname=' . DBNAME, USER, PASS);
@@ -31,7 +31,7 @@ $pdo->query("CREATE TABLE USUARIO(
 
 $pdo->query("CREATE TABLE CATEGORIA(
     id_categoria        int auto_increment PRIMARY KEY not null,
-    nome_categoia       varchar(255),
+    nome_categoria       varchar(255),
     descricao           text)"
     );
 

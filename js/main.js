@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
     const PROTOCOLO = "http";
-    const PATH = window.location.hostname;
+    const PATH = window.location.hostname +"/vegan";
     
     
     $('#usuario').blur(function() {
@@ -19,6 +19,12 @@ $(document).ready(function() {
         let url = `${PROTOCOLO}://${PATH}/api/verificarusuario.php`;
         let data = { data: $('#email').val(), tipo: "email" };
         ajax(data,"","Este email está sendo usando por outro usuário", url, "msg-email" );
+    });
+
+    $("#trash").click(function() {
+        if (confirm("Tem certeza que você quer EXCLUIR essa categoria")) {
+            location.href = PROTOCOLO +"://" + PATH + "/categoria/excluir/"+ $("#trash").attr("name");
+        }
     });
 });
 
@@ -41,3 +47,6 @@ function ajax(data,msg_success,msg_fail, url, obj)
         }
     });
 }
+
+
+

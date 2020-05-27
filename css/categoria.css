@@ -2,6 +2,9 @@
     height: 90vh;
 }
 
+.categoria-content i {
+    font-size: 26px;
+}
 a button {
     cursor: pointer;
 }
@@ -16,3 +19,4 @@ a button {
 .form-add-categoria textarea {
     resize: none;
 }
+

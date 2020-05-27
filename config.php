@@ -1,6 +1,6 @@
 <?php
 
-define("PATH",$_SERVER['HTTP_HOST']."/vegan/");
+define("PATH",$_SERVER['HTTP_HOST']."/vegan");
 
 define("PROTOCOLO","http");
 

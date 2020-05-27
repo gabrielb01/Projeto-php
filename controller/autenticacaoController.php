@@ -82,7 +82,7 @@ Class AutenticacaoController
                 header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
             }
         } else {
-            echo "ERRO";
+            new ErrorController();
         }
     }
 
@@ -119,6 +119,8 @@ Class AutenticacaoController
                     }
                 }
             }
+        } else {
+            new ErrorController();
         }
 
 
@@ -128,11 +130,15 @@ Class AutenticacaoController
 
     function logout()
     {
-        unset($_SESSION['user']);
-        unset($_SESSION['usuario']);
-        unset($_SESSION['nome_full']);
-        unset($_SESSION['permissao']);  
-        header('Location:' .PROTOCOLO. '://'.PATH.'');
+       if (isset($_SESSION['user'])) {
+            unset($_SESSION['user']);
+            unset($_SESSION['usuario']);
+            unset($_SESSION['nome_full']);
+            unset($_SESSION['permissao']);  
+            header('Location:' .PROTOCOLO. '://'.PATH.'');
+       } else {
+            new ErrorController();
+       }
     }
 
 

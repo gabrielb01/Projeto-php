@@ -161,6 +161,8 @@ class UsuarioController
                 header('Location:' .PROTOCOLO. '://'.PATH.'');
 
             }
+        } else {
+            new ErrorCOntroller();
         }
     }
 }
