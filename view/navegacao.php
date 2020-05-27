@@ -8,7 +8,7 @@
 
 <nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-gradient-success">
     <div class="container">
-      <a href="/" class="navbar-brand h1 mb-0">
+      <a href="" class="navbar-brand h1 mb-0">
         <img src="bootstrap/vegan-symbol-png.png" width="30" height="30" class="d-inline-block align-top" alt="">
 
         Conscious Vegan</a>
@@ -23,22 +23,22 @@
         <ul class="navbar-nav mr-auto">
 
           <li class="nav-item">
-            <a class="nav-link" href="/">Inicio</a>
+            <a class="nav-link" href="">Inicio</a>
           </li>
          
          <?php if(!isset($_SESSION['user'])): ?>
           <li class="nav-item">
-            <a class="nav-link" href="/autenticacao/login">Login</a>
+            <a class="nav-link" href="autenticacao/login">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/autenticacao/cadastro">Cadastre-se</a>
+            <a class="nav-link" href="autenticacao/cadastro">Cadastre-se</a>
           </li>
 
          <?php endif; ?>
 
          <?php if(isset($_SESSION['permissao']) && in_array("admin",$permissão)):?>
           <li class="nav-item">
-            <a class="nav-link" href="/categoria">Categoria</a>
+            <a class="nav-link" href="categoria">Categoria</a>
           </li>
 
           <?php endif;?>
@@ -47,10 +47,10 @@
        
          
           <li class="nav-item">
-            <a class="nav-link" href="/usuario/profile/<?=$_SESSION['usuario']?>">Perfil</a>
+            <a class="nav-link" href="usuario/profile/<?=$_SESSION['usuario']?>">Perfil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/autenticacao/logout">Sair</a>
+            <a class="nav-link" href="autenticacao/logout">Sair</a>
           </li>
 
          <?php endif; ?>

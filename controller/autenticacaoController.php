@@ -81,6 +81,8 @@ Class AutenticacaoController
                 $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
                 header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
             }
+        } else {
+            echo "ERRO";
         }
     }
 
