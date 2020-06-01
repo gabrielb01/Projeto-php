@@ -9,11 +9,15 @@ define("PROTOCOLO","http");
 
 
 $pdo = new PDO('mysql:host=' . HOST ,  USER, PASS);
-$pdo->query("DROP DATABASE VEGAN");
+$pdo->query("DROP DATABASE VEGAN"
+
+);
 $pdo->query("CREATE DATABASE IF NOT EXISTS VEGAN");
 
 $pdo = new pdo('mysql:host=' . HOST . ';dbname=' . DBNAME, USER, PASS);
 
+
+$pdo->query("ALTER DATABASE ".DBNAME." CHARSET = Latin1 COLLATE = latin1_swedish_ci");
 
 $pdo->query("CREATE TABLE USUARIO(
     id_usuario          int auto_increment PRIMARY KEY not null,
@@ -26,6 +30,17 @@ $pdo->query("CREATE TABLE USUARIO(
     sexo                char(1),
     ativo               boolean ,
     foto_perfil         varchar(255));");
+
+
+$pdo->query("CREATE TABLE RECEITA(
+    id_receita          int auto_increment PRIMARY KEY not null,
+    titulo              varchar(255),     
+    ingredientes        varchar(255),
+    mododefazer         text,
+    foto_receita         varchar(255),
+    categoria           varchar(255),
+    id_usuario          int,
+    FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario));");
 
 
 

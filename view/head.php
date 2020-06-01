@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="<?=PROTOCOLO?>://<?=PATH?>/css/autenticacao.css">
   <link rel="stylesheet" href="<?=PROTOCOLO?>://<?=PATH?>/css/usuario.css">
   <link rel="stylesheet" href="<?=PROTOCOLO?>://<?=PATH?>/css/categoria.css">
+  <link rel="stylesheet" href="<?=PROTOCOLO?>://<?=PATH?>/css/receita.css">
 
   <title>Conscious Vegan</title>
 </head>

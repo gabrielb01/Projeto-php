@@ -2,6 +2,9 @@
 $(document).ready(function() {
     const PROTOCOLO = "http";
     const PATH = window.location.hostname +"/vegan";
+
+
+
     
     
     $('#usuario').blur(function() {
@@ -26,7 +29,41 @@ $(document).ready(function() {
             location.href = PROTOCOLO +"://" + PATH + "/categoria/excluir/"+ $("#trash").attr("name");
         }
     });
+
+    $("#formNewReceita").submit(function() {
+        lines();
+    });
+
+    $("#fotoReceita").change(function(event) {
+
+        let fileReader = new FileReader();
+        fileReader.onload = function(e) {
+            $("#imagemReceita").attr("src",e.target.result);
+        }
+        fileReader.readAsDataURL(event.target.files[0]);
+
+        
+    });
+
+    $(".single-receita i").click(function(event) {
+        $("#singleOption").css('display'​​​​​​​​​​​​​​​​​​​​​​​​​​​,'block');​​​​​​
+    });
+
 });
+
+function lines() {
+    let lines = $('#text-ingredientes').val().split(/\n/);
+    let contentLines = [];
+    for (let i=0; i < lines.length; i++) {
+        if (/\S/.test(lines[i])) {
+            contentLines.push($.trim(lines[i]));
+        }
+    }
+
+    $("#listasFull").val(contentLines);
+}
+
+
 
 
 

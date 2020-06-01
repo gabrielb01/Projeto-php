@@ -43,7 +43,6 @@ endif;
                <br><br>
                <div class="form-group">
                    <input type="submit" value="Editar" class="btn btn-success">
-                   <input type="reset" value="Limpa" class="btn btn-danger">
                </div>
            </form>
         </div>

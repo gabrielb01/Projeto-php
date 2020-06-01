@@ -10,6 +10,15 @@ class CategoriaController
     {
         $this->database = new Database();
 
+
+        if (isset($_SESSION['permissao'])) {
+            $permissão = explode(";",$_SESSION['permissao']);
+           if (!in_array("admin",$permissão)) {
+            header('Location: ' .PROTOCOLO. '://'.PATH.'/error');
+           }
+          }
+        
+
         if (!isset($_SESSION['user'])) {
             header('Location: ' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
         }
@@ -63,7 +72,7 @@ class CategoriaController
     function validarNovaCategoria()
     {
         if ($_POST) {
-            if (!isset($_POST['categoria']) || !isset($_POST['descricao'])) {
+            if ($_POST['categoria']=="" || $_POST['descricao']=="") {
                 $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
                 header('Location: '.PROTOCOLO. '://'.PATH.'/categoria/new');
             } else {
@@ -97,7 +106,7 @@ class CategoriaController
     function validarEdit($id)
     {
         if($_POST) {
-            if (!isset($_POST['categoria']) || !isset($_POST['descricao'])) {
+            if ($_POST['categoria']=="" || $_POST['descricao']=="") {
                 $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
                 header('Location: '.PROTOCOLO. '://'.PATH.'/categoria/edit/'.$id.'');
             } else {

@@ -9,7 +9,7 @@
 <div class="container">
     <div class="nav-flex">
         <div class="nav-box">
-            <h4>Minha Receitas<br></h4>
+            <h4><a href="<?= PROTOCOLO ?>://<?= PATH ?>/receita">Minha Receitas</a></h4><br>
         </div>
         <div class="nav-box">
             <h4>Receitas <br> Salvas</h4>

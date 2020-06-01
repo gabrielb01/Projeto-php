@@ -1,0 +1,13 @@
+.single-receita i {
+    position: absolute;
+    right: 40px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+#singleOption {
+    display: none;
+    position: relative;
+    z-index: 9;
+}
