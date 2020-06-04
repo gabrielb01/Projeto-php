@@ -28,7 +28,7 @@ $pdo->query("CREATE TABLE USUARIO(
     nome                varchar(255),
     sobrenome           varchar(255),
     sexo                char(1),
-    ativo               boolean ,
+    ativo               boolean
     foto_perfil         varchar(255));");
 
 
@@ -40,6 +40,7 @@ $pdo->query("CREATE TABLE RECEITA(
     foto_receita         varchar(255),
     categoria           varchar(255),
     id_usuario          int,
+    criando_em          DATETIME,
     FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario));");
 
 
@@ -53,7 +54,7 @@ $pdo->query("CREATE TABLE CATEGORIA(
 
 
 
-$foto =PROTOCOLO. '://'.PATH.'/img/default/default.png';
+$foto = '/img/default/default.png';
 
 $pdo->query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,foto_perfil) VALUES ('gabriel','gabriel@teste.com','user;admin','$2y$10$4OS8oPpNIuG/s9N0lqT2MeIBH3DLNQZEoPN8zqEpA/7BrMpNEGqpK','Gabriel','Alves','M','".$foto."')");
 

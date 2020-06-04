@@ -1,45 +1,45 @@
-<?php if(isset($_SESSION["CADASTRO_SUCESSO"])): ?>
+<?php if (isset($_SESSION["CADASTRO_SUCESSO"])) : ?>
     <div class="alert alert-dark" role="alert">
-     <?php echo $_SESSION["CADASTRO_SUCESSO"]; ?>
-</div>
+        <?php echo $_SESSION["CADASTRO_SUCESSO"]; ?>
+    </div>
 
 
-<?php 
+<?php
 
-unset($_SESSION["CADASTRO_SUCESSO"]);
+    unset($_SESSION["CADASTRO_SUCESSO"]);
 
-endif;?>
+endif; ?>
 
 
-<?php if(isset($_SESSION["ERROR_DATA_OUT"])): ?>
+<?php if (isset($_SESSION["ERROR_DATA_OUT"])) : ?>
 
-<div class="alert alert-dark" role="alert">
- <?php echo $_SESSION["ERROR_DATA_OUT"]; ?>
- 
-</div>
+    <div class="alert alert-dark" role="alert">
+        <?php echo $_SESSION["ERROR_DATA_OUT"]; ?>
 
-<?php 
+    </div>
 
-unset($_SESSION["ERROR_DATA_OUT"]);
+<?php
 
-endif;?>
+    unset($_SESSION["ERROR_DATA_OUT"]);
 
-<?php if(isset($_SESSION["ERROR_DATA_LOGIN"])): ?>
+endif; ?>
 
-<div class="alert alert-dark" role="alert">
- <?php echo $_SESSION["ERROR_DATA_LOGIN"]; ?>
- 
-</div>
+<?php if (isset($_SESSION["ERROR_DATA_LOGIN"])) : ?>
 
-<?php 
+    <div class="alert alert-dark" role="alert">
+        <?php echo $_SESSION["ERROR_DATA_LOGIN"]; ?>
 
-unset($_SESSION["ERROR_DATA_LOGIN"]);
+    </div>
 
-endif;?>
+<?php
+
+    unset($_SESSION["ERROR_DATA_LOGIN"]);
+
+endif; ?>
 <div class="container-fluid">
     <div class="center">
         <div class="col-sm-3 col-xs-3">
-            <form class="form-autenticao" method="post" action="http://<?=PATH?>/autenticacao/validarLogin">
+            <form class="form-autenticao" method="post" action="http://<?= PATH ?>/autenticacao/validarLogin">
                 <div class="form-group">
                     <h2>Login</h2>
                 </div>
@@ -55,7 +55,7 @@ endif;?>
                     <button class="btn btn-primary btn-lg">Entrar</button>
                 </div>
                 <a href="cadastro">Cadastrar Grátis</a>
-                
+
             </form>
         </div>
     </div>

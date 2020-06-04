@@ -47,34 +47,44 @@ Class AutenticacaoController
 
             if ($_POST['email'] != "" && $_POST['senha'] && $_POST['usuario'] != "" && $_POST['nome'] !="" && $_POST['sobrenome']) {
              
+                $email =trim(limpar($_POST['email']));
+                $senha =trim(limpar($_POST['senha']));
+                $usuario =trim(limpar($_POST['usuario']));
+                $nome =trim(limpar($_POST['nome']));
+                $sobrenome =trim(limpar($_POST['sobrenome']));
 
-                if(strlen($_POST['senha']) < 8) {
-                    $_SESSION["ERROR_DATA_PASSWORD"] = "A senha deve contem no minimo 8 caracteres";
-                    header('Location: '. PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
+                if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $_SESSION["ERROR_DATA_OUT"] = "Insira um e-mail válido!";
+                    header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
                 } else {
-                    if (isset($_POST['radio'])) {
-                        $number = strval(rand(1,100000));
-                        $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT );
-                        $usuario = $_POST['usuario'];
-                        $parametro = [
-                            ":usuario" => $usuario,
-                            ":email" => $_POST['email'],
-                            ":permissao" => "user",
-                            ":senha" => $senha,
-                            ":nome" => $_POST['nome'],
-                            ":sobrenome" => $_POST['sobrenome'],
-                            ":sexo" => $_POST['radio'],
-                            ":foto_perfil" =>  PROTOCOLO. '://'.PATH.'/img/default/default.png' 
-                        ];
-    
-                        $database->exe_query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,foto_perfil) VALUES(:usuario,:email,:permissao,:senha,:nome,:sobrenome,:sexo, :foto_perfil)", $parametro);
-                        $_SESSION["CADASTRO_SUCESSO"] = "Cadastro feito com sucesso, faça o login!";
-                        header('Location: ' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
+                    if(strlen($senha) < 8) {
+                        $_SESSION["ERROR_DATA_PASSWORD"] = "A senha deve contem no minimo 8 caracteres";
+                        header('Location: '. PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
                     } else {
-                        $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
-                        header('Location: '.PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
+                        if (isset($_POST['radio'])) {
+                            $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT );
+                            $parametro = [
+                                ":usuario" => $usuario,
+                                ":email" => $email,
+                                ":permissao" => "user",
+                                ":senha" => $senha,
+                                ":nome" => $nome,
+                                ":sobrenome" => $sobrenome,
+                                ":sexo" => $_POST['radio'],
+                                ":foto_perfil" =>  PROTOCOLO. '://'.PATH.'/img/default/default.png' 
+                            ];
+        
+                            $database->exe_query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,foto_perfil) VALUES(:usuario,:email,:permissao,:senha,:nome,:sobrenome,:sexo, :foto_perfil)", $parametro);
+                            $_SESSION["CADASTRO_SUCESSO"] = "Cadastro feito com sucesso, faça o login!";
+                            header('Location: ' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
+                        } else {
+                            $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
+                            header('Location: '.PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
+                        }
                     }
                 }
+
+               
                
                 
             } else {
@@ -96,9 +106,11 @@ Class AutenticacaoController
                 header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
             } else {
                 $database = new Database();
+                $email =trim(limpar($_POST['email']));
+                $senha =trim(limpar($_POST['senha']));
 
                 $parametro = [
-                    ":email" => $_POST['email']
+                    ":email" => $email
                 ];
 
                 $resultado = $database->query("SELECT * FROM USUARIO WHERE email=:email",$parametro);
@@ -107,7 +119,7 @@ Class AutenticacaoController
                     $_SESSION["ERROR_DATA_LOGIN"] = "Email ou senha está incorretos";
                     header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
                 } else {
-                    if (!password_verify($_POST['senha'],$resultado[0]['senha'])) {
+                    if (!password_verify($senha,$resultado[0]['senha'])) {
                         $_SESSION["ERROR_DATA_LOGIN"] = "Email ou, a senha está incorreto";
                         header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
                     } else {
@@ -144,7 +156,3 @@ Class AutenticacaoController
 
 
 }
-
-
-
-?>

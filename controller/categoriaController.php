@@ -68,6 +68,17 @@ class CategoriaController
           
     }
 
+    function show($name)
+    {
+        require_once "view/head.php";
+       
+        require_once "view/navegacao.php";        
+       
+        require_once "view/showcategoria.php";
+       
+        require_once "view/footer.php";
+    }
+
 
     function validarNovaCategoria()
     {
@@ -77,10 +88,11 @@ class CategoriaController
                 header('Location: '.PROTOCOLO. '://'.PATH.'/categoria/new');
             } else {
 
-
-
+                $categoria =trim(limpar($_POST['categoria']));
+                $descricao =trim(limpar($_POST['descricao']));
+                
                 $parametro = [
-                    ":categoria" => $_POST['categoria']
+                    ":categoria" => $categoria
                 ];
 
                 $resultado = $this->database->query("SELECT nome_categoria FROM CATEGORIA WHERE nome_categoria=:categoria",$parametro);
@@ -90,8 +102,8 @@ class CategoriaController
                     header('Location: '.PROTOCOLO. '://'.PATH.'/categoria/new');
                 } else {
                     $parametro = [
-                        ":categoria" => $_POST['categoria'],
-                        ":descricao" => $_POST['descricao']
+                        ":categoria" => $categoria,
+                        ":descricao" => $descricao
                     ];
 
                     $this->database->exe_query("INSERT INTO CATEGORIA(nome_categoria,descricao) VALUES (:categoria,:descricao)",$parametro);
@@ -110,8 +122,10 @@ class CategoriaController
                 $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
                 header('Location: '.PROTOCOLO. '://'.PATH.'/categoria/edit/'.$id.'');
             } else {
+                $categoria =trim(limpar($_POST['categoria']));
+                $descricao =trim(limpar($_POST['descricao']));
                 $parametro = [
-                    ":categoria" => $_POST['categoria'],
+                    ":categoria" => $categoria,
                     ":id"        => $id
                 ];
 
@@ -122,8 +136,8 @@ class CategoriaController
                     header('Location: '.PROTOCOLO. '://'.PATH.'/categoria/edit/'.$id.'');
                 } else {
                     $parametro = [
-                        ":categoria" => $_POST['categoria'],
-                        ":descricao" => $_POST['descricao'],
+                        ":categoria" =>$categoria,
+                        ":descricao" => $descricao,
                         ":id"        => $id
                     ];
 

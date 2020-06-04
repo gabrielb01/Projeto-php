@@ -51,9 +51,12 @@ class UsuarioController
             if($_POST['form']=="formFullName") {
                 if($_POST['nome'] != "" && $_POST['sobrenome'] != "") {
                     
+                    $nome =trim(limpar($_POST['nome']));
+                    $sobrenome =trim(limpar($_POST['sobrenome']));
+
                     $parametro = [
-                        ":nome" => $_POST['nome'],
-                        ":sobrenome" => $_POST['sobrenome'],
+                        ":nome" => $nome,
+                        ":sobrenome" => $sobrenome,
                         ":id" => $_SESSION['user']
                     ];
                     $database->exe_query("UPDATE USUARIO SET nome=:nome,sobrenome=:sobrenome WHERE id_usuario=:id", $parametro);
@@ -70,18 +73,19 @@ class UsuarioController
                     $_SESSION["ERROR_DATA_OUT"] = "Nenhum Campo pode ficar em branco!";
                     header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-usuario');
                 } else {
-                    if ($_POST['usuario'] ==$_SESSION['usuario']) {
+                    $usuario =trim(limpar($_POST['usuario']));
+                    if ($usuario ==$_SESSION['usuario']) {
                         $_SESSION["ERROR_DATA_OUT"] = "Você colocou o mesmo nome de usuário!";
                         header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-usuario');
                     } else {
                         $parametro = [
-                            ":usuario" =>$_POST['usuario'],
+                            ":usuario" =>$usuario,
                             ":id" => $_SESSION['user']
                         ];
                         $resultado = $database->query("SELECT usuario FROM USUARIO WHERE usuario=:usuario AND id_usuario!=:id", $parametro);
                         if (count($resultado) == 0) {
                             $parametro = [
-                                ":usuario" => $_POST['usuario'],
+                                ":usuario" => $usuario,
                                 ":id" => $_SESSION['user']
                             ];
                             $database->exe_query("UPDATE USUARIO SET usuario=:usuario WHERE id_usuario=:id", $parametro);
@@ -96,14 +100,19 @@ class UsuarioController
                     $_SESSION["ERROR_DATA_OUT"] = "Nenhum Campo pode ficar em branco!";
                     header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-email');
                 } else {
+                    $email =trim(limpar($_POST['email']));
+                    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $_SESSION["ERROR_DATA_OUT"] = "Insira um e-mail válido!";
+                        header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-email');
+                    } else {
 
                     $parametro = [
-                        ":email" => $_POST['email']
+                        ":email" => $email
                     ];
 
                     $resultado = $database->query("SELECT email FROM USUARIO WHERE email=:email", $parametro);
                     if (count($resultado)!=0) {
-                        if ($_POST["email"] == $resultado[0]['email']) {
+                        if ($email == $resultado[0]['email']) {
                             $_SESSION["ERROR_DATA_OUT"] = "Você colocou o mesmo nome de usuário!";
                             header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-email');
                         } else {
@@ -112,13 +121,15 @@ class UsuarioController
                         }
                     } else {
                         $parametro = [
-                            ":email" => $_POST['email'],
+                            ":email" => $email,
                             ":id" => $_SESSION['user']
                         ];
                         $database->exe_query("UPDATE USUARIO SET email=:email WHERE id_usuario=:id", $parametro);
                         $_SESSION["EDIT_SUCCESS"] = "Tudo foi salvo!";
                         header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-email');
                     }
+                    }
+
                     
                 }
             } else if ($_POST['form']=="senha_c") {
@@ -126,26 +137,34 @@ class UsuarioController
                     $_SESSION["ERROR_DATA_OUT"] = "Nenhum Campo pode ficar em branco!";
                     header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-senha');
                  } else {
-                     if ($_POST['senha'] != $_POST['senha2']) {
+                    $senha =trim(limpar($_POST['senha']));
+                    $senha2 =trim(limpar($_POST['senha2']));
+                    $senha_original =trim(limpar($_POST['senha_original']));
+                     if ($senha != $senha2) {
                         $_SESSION["ERROR_DATA_OUT"] = "Você deve escrever a nova senha iguais nos campos!";
                         header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-senha');
                      } else {
-                         $parametro = [
-                             ":id" => $_SESSION['user']
-                         ];
-                         $resultado =$database->query("SELECT senha FROM USUARIO WHERE id_usuario=:id",$parametro);
-
-                         if (!password_verify($_POST['senha_original'],$resultado[0]['senha'])) {
-                            $_SESSION["ERROR_DATA_OUT"] = "A sua senha está errada [primeiro campo]!";
+                         if(strlen($senha) <8) {
+                            $_SESSION["ERROR_DATA_OUT"] = "A senha de contém no mínimo 8 caracteres!";
                             header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-senha');
                          } else {
                             $parametro = [
-                                ":senha" => password_hash($_POST['senha'], PASSWORD_DEFAULT),
                                 ":id" => $_SESSION['user']
                             ];
-                            $database->exe_query("UPDATE USUARIO SET senha=:senha WHERE id_usuario=:id", $parametro);
-                            $_SESSION["EDIT_SUCCESS"] = "Tudo foi salvo!";
-                            header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-senha');
+                            $resultado =$database->query("SELECT senha FROM USUARIO WHERE id_usuario=:id",$parametro);
+   
+                            if (!password_verify($senha_original,$resultado[0]['senha'])) {
+                               $_SESSION["ERROR_DATA_OUT"] = "A sua senha está errada [primeiro campo]!";
+                               header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-senha');
+                            } else {
+                               $parametro = [
+                                   ":senha" => password_hash($senha, PASSWORD_DEFAULT),
+                                   ":id" => $_SESSION['user']
+                               ];
+                               $database->exe_query("UPDATE USUARIO SET senha=:senha WHERE id_usuario=:id", $parametro);
+                               $_SESSION["EDIT_SUCCESS"] = "Tudo foi salvo!";
+                               header('Location: '.PROTOCOLO. '://'.PATH.'/usuario/edit/editar-senha');
+                            }
                          }
                      }
                  }
@@ -166,6 +185,3 @@ class UsuarioController
         }
     }
 }
-
-
-?>

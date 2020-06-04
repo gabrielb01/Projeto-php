@@ -2,6 +2,7 @@
 $(document).ready(function() {
     const PROTOCOLO = "http";
     const PATH = window.location.hostname +"/vegan";
+    let show = false;
 
 
 
@@ -24,9 +25,19 @@ $(document).ready(function() {
         ajax(data,"","Este email está sendo usando por outro usuário", url, "msg-email" );
     });
 
+
+
+    
+
     $("#trash").click(function() {
         if (confirm("Tem certeza que você quer EXCLUIR essa categoria")) {
             location.href = PROTOCOLO +"://" + PATH + "/categoria/excluir/"+ $("#trash").attr("name");
+        }
+    });
+
+    $("#trash-Receita").click(function() {
+        if (confirm("Tem certeza que você quer EXCLUIR essa receita")) {
+            location.href = PROTOCOLO +"://" + PATH + "/receita/excluir/"+ $("#trash-Receita").attr("name");
         }
     });
 
@@ -45,9 +56,16 @@ $(document).ready(function() {
         
     });
 
-    $(".single-receita i").click(function(event) {
-        $("#singleOption").css('display'​​​​​​​​​​​​​​​​​​​​​​​​​​​,'block');​​​​​​
+    $(".single-receita i").click(function() {
+        if (!show) {
+            $("#singleOption")[0].style.display = "block";
+            show =true;
+        } else {
+            $("#singleOption")[0].style.display = "none";
+            show = false;
+        }
     });
+
 
 });
 
