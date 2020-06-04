@@ -28,7 +28,7 @@ $pdo->query("CREATE TABLE USUARIO(
     nome                varchar(255),
     sobrenome           varchar(255),
     sexo                char(1),
-    ativo               boolean
+    ativo               boolean,
     foto_perfil         varchar(255));");
 
 
