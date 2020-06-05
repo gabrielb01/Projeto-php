@@ -9,6 +9,12 @@ if ($url!=""){
     $url = explode("/",$url);
 }
 
+if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ) {
+    define("PROTOCOLO","https");
+} else {
+    define("PROTOCOLO","http");
+}
+
 
 session_start();
 
@@ -29,6 +35,3 @@ require_once "bootstrap.php";
 
 
 $bootstrap = new Bootstrap($url);
-
-
-?>

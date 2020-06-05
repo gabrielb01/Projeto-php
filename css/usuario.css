@@ -54,6 +54,29 @@
  /* usuario editar */
 
 
+ .edit-image {
+     font-size: 95px;
+     margin-left: 22px;
+     margin-top: 3px;
+     color: rgba(51, 51, 51, 0.456);
+     opacity: 0;
+     cursor: pointer;
+ }
+
+ .div-popup {
+     position: fixed;
+     left: 30%;
+     top: 30%;
+     padding: 20px;
+     border: 1px solid #333;
+     background-color: #fff;
+     border-radius: 6px;
+ }
+
+ .edit-image:hover {
+    opacity: 1;
+ }
+
 
  .container-flex {
     display:  flex;
@@ -62,9 +85,6 @@
     padding: 50px;
  }
 
- .container-flex a {
-     color: #
- }
 
 
  .container-flex-left {

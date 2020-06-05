@@ -56,6 +56,20 @@ $(document).ready(function() {
         
     });
 
+
+    $("#fotoPerfil").change(function(event) {
+
+        let fileReader = new FileReader();
+        fileReader.onload = function(e) {
+            $("#imagemPerfil").attr("src",e.target.result);
+        }
+        fileReader.readAsDataURL(event.target.files[0]);
+
+        
+    });
+
+
+
     $(".single-receita i").click(function() {
         if (!show) {
             $("#singleOption")[0].style.display = "block";
@@ -64,6 +78,11 @@ $(document).ready(function() {
             $("#singleOption")[0].style.display = "none";
             show = false;
         }
+    });
+
+
+    $(".edit-image").click(function() {
+        alert("OK");
     });
 
 

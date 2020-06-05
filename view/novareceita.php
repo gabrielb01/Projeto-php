@@ -52,8 +52,7 @@ endif;
                 <div class="form-group">
                     <h3>Imagem</h3>
                     <img id="imagemReceita" width="200px" height="200px" />
-                    <input type="file" name="fotoReceita" accept="image/*" id="fotoReceita" required />
-                    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+                    <input type="file" name="fotoPerfil" accept="image/*" id="fotoReceita" required />
                 </div>
 
                 <div class="form-group">
