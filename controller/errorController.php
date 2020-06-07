@@ -6,7 +6,7 @@ class ErrorController
 
     private $style;
     
-    public function __construct()
+    public function index()
     {
         require_once "view/head.php";
 

@@ -132,7 +132,7 @@ class CategoriaController
                 }
             }
         } else {
-            new ErrorController();
+            header("Location:".PROTOCOLO."://".PATH."/error");
         }
     }
 
@@ -169,7 +169,7 @@ class CategoriaController
 
             }
         } else {
-            new ErrorController();
+            header("Location:".PROTOCOLO."://".PATH."/error");
         }
     }
 

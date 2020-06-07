@@ -209,7 +209,7 @@ class UController
 
             }
         } else {
-            new ErrorCOntroller();
+            header("Location:".PROTOCOLO."://".PATH."/error");
         }
     }
 }

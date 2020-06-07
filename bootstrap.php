@@ -32,11 +32,11 @@ Class Bootstrap
                             $controller->$acao($url[2]);
                         }
                     } else {
-                        new ErrorController();
+                        header("Location:".PROTOCOLO."://".PATH."/error");
                     }
                 }
             } else {
-                new ErrorController();
+                header("Location:".PROTOCOLO."://".PATH."/error");
             }
         }
     }

@@ -118,7 +118,7 @@ Class AccountsController
                 header('Location:' .PROTOCOLO. '://'.PATH.'/accounts/cadastro');
             }
         } else {
-            new ErrorController();
+            header("Location:".PROTOCOLO."://".PATH."/error");
         }
     }
 
@@ -158,7 +158,7 @@ Class AccountsController
                 }
             }
         } else {
-            new ErrorController();
+            header("Location:".PROTOCOLO."://".PATH."/error");
         }
 
 
@@ -175,7 +175,7 @@ Class AccountsController
             unset($_SESSION['permissao']);  
             header('Location:' .PROTOCOLO. '://'.PATH.'');
        } else {
-            new ErrorController();
+         header("Location:".PROTOCOLO."://".PATH."/error");
        }
     }
 

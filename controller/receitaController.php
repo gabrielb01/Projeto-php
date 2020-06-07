@@ -176,7 +176,7 @@ class ReceitaController
                 }
             }
         } else {
-            new ErrorController();
+            header("Location:".PROTOCOLO."://".PATH."/error");
         }
     }
     
@@ -252,7 +252,7 @@ class ReceitaController
                 }
             }
         } else {
-            new ErrorController();
+            header("Location:".PROTOCOLO."://".PATH."/error");
         }
     }
 
