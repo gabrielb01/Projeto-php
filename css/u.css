@@ -20,7 +20,9 @@
    width: 150px;
    border-radius: 50%;
    border: 3px solid #fff;
-   background-position: center;
+   background-position: center center;
+   background-repeat: no-repeat;
+   background-size: cover;
 }
 
 
@@ -67,13 +69,7 @@
      cursor: pointer;
  }
 
- .fundo {
-     position: fixed;
-     top: 0;
-     left: 0;
-     right:0;
-     bottom: 0;
- }
+
 
  .div-popup {
      position: fixed;

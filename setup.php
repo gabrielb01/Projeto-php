@@ -4,7 +4,7 @@ define('HOST', 'localhost');
 define('USER', 'root');
 define('PASS', '');
 define('DBNAME', 'VEGAN');
-define("PATH",$_SERVER['HTTP_HOST']);
+define("PATH",$_SERVER['HTTP_HOST']."/vegan");
 define("PROTOCOLO","http");
 
 
@@ -27,6 +27,7 @@ $pdo->query("CREATE TABLE USUARIO(
     senha               varchar(255),
     nome                varchar(255),
     sobrenome           varchar(255),
+    receitas_salvas     text DEFAULT '',
     sexo                char(1),
     ativo               boolean,
     foto_perfil         varchar(255));");

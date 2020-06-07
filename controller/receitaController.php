@@ -142,11 +142,11 @@ class ReceitaController
                     header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
                 } else {
                     if (!in_array($tipo_image[1], $type_in)) {
-                        $_SESSION["ERROR_DATA_OUT"] = "Escolha Imagem do tipo png ou jpg 2";
-                        header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
+                        $_SESSION["ERROR_DATA_OUT"] = "Escolha Imagem do tipo png ou jpg ";
+                        echheader('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
                     } else {
                         $img_receita = md5(strval(date("Y-m-d H:i:s")) . $_FILES['fotoReceita']['name']);
-                        $destino = "img/receitas/";
+                        $destino = "img/receita/";
                         $novoNome = $img_receita . '.' . $tipo_image[1];
                         $arquivo_tmp = $_FILES['fotoReceita']['tmp_name'];
 

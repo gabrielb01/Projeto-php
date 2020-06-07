@@ -12,7 +12,7 @@ $(document).ready(function() {
        if ($('#usuario').val() !="") {
            let url = `${PROTOCOLO}://${PATH}/api/verificarusuario.php`;
            let data = { data: $('#usuario').val(), tipo: "usuario" };
-           ajax(data,"Este usuário está disponível","Este usuário não está disponível", url, "msg-usuario" );
+           ajax(data, url, "msg-usuario" );
        }
     });
 
@@ -22,7 +22,17 @@ $(document).ready(function() {
     $('#email').blur(function() {
         let url = `${PROTOCOLO}://${PATH}/api/verificarusuario.php`;
         let data = { data: $('#email').val(), tipo: "email" };
-        ajax(data,"","Este email está sendo usando por outro usuário", url, "msg-email" );
+        ajax(data, url, "msg-email" );
+    });
+
+
+    $("#salvarReceita").click(function() {
+        let url = `${PROTOCOLO}://${PATH}/api/listareceita.php`;
+        let data = { identificacao:$(this).attr("identificacao"), type: $(this).attr("type"),user: $(this).attr("user") };
+        ajax(data, url, "msg-receita" );
+        setTimeout(function() {
+            location.reload();
+        },2000);
     });
 
 
@@ -81,15 +91,15 @@ $(document).ready(function() {
     });
 
 
-    $(".background-img").click(function() {
+    $(".profile-img").click(function() {
         $(".div-popup").css("top","25%");
-        $(".fundo").css("background-color","rgba(0,0,0,0.75)");
+        $(".div-popup").css("opacity","1");
         $("body").css("overflow-y","hidden");
     });
 
     $(".close").click(function() {
         $(".div-popup").css("top","-60%");
-        $(".fundo").css("background-color","rgba(0,0,0,0.0)");
+        $(".div-popup").css("opacity","0");
         $("body").css("overflow-y","scroll");
     });
 
@@ -114,18 +124,14 @@ function lines() {
 
 
 
-function ajax(data,msg_success,msg_fail, url, obj) 
+function ajax(data, url, obj) 
 {
     $.ajax({
         url: url,
         type: "post",
         data:data,
         success: function(res) {
-            if(res=="0") {
-                $("#"+obj).html(msg_success);
-            } else {
-                $("#"+obj).html(msg_fail);
-            }
+            $("#"+obj).html(res);
         }
     });
 }

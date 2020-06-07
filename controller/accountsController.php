@@ -8,11 +8,15 @@ Class AccountsController
 
     private $style;
 
+    private $database;
+
     public function __construct()
     {
         if (isset($_SESSION['user'])) {
             header('Location:' .PROTOCOLO. '://'.PATH.'');
         }
+
+        $this->database = new Database();
 
     }
 
@@ -66,8 +70,6 @@ Class AccountsController
     public function validarCadastro() 
     {
 
-
-        $database = new Database();
         if ($_POST){
 
 
@@ -81,11 +83,11 @@ Class AccountsController
 
                 if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $_SESSION["ERROR_DATA_OUT"] = "Insira um e-mail válido!";
-                    header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
+                    header('Location:' .PROTOCOLO. '://'.PATH.'/accounts/cadastro');
                 } else {
                     if(strlen($senha) < 8) {
                         $_SESSION["ERROR_DATA_PASSWORD"] = "A senha deve contem no minimo 8 caracteres";
-                        header('Location: '. PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
+                        header('Location: '. PROTOCOLO. '://'.PATH.'/accounts/cadastro');
                     } else {
                         if (isset($_POST['radio'])) {
                             $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT );
@@ -97,15 +99,15 @@ Class AccountsController
                                 ":nome" => $nome,
                                 ":sobrenome" => $sobrenome,
                                 ":sexo" => $_POST['radio'],
-                                ":foto_perfil" =>  PROTOCOLO. '://'.PATH.'/img/default/default.png' 
+                                ":foto_perfil" =>'/img/default/default.png'
                             ];
         
-                            $database->exe_query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,foto_perfil) VALUES(:usuario,:email,:permissao,:senha,:nome,:sobrenome,:sexo, :foto_perfil)", $parametro);
+                            $this->database->exe_query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,foto_perfil) VALUES(:usuario,:email,:permissao,:senha,:nome,:sobrenome,:sexo, :foto_perfil)", $parametro);
                             $_SESSION["CADASTRO_SUCESSO"] = "Cadastro feito com sucesso, faça o login!";
-                            header('Location: ' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
+                            header('Location: ' .PROTOCOLO. '://'.PATH.'/accounts/login');
                         } else {
                             $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
-                            header('Location: '.PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
+                            header('Location: '.PROTOCOLO. '://'.PATH.'/accounts/cadastro');
                         }
                     }
                 }
@@ -129,9 +131,8 @@ Class AccountsController
         if ($_POST) {
             if ($_POST['email'] == "" || $_POST['senha'] == "") {
                 $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
-                header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
+                header('Location:' .PROTOCOLO. '://'.PATH.'/accounts/login');
             } else {
-                $database = new Database();
                 $email =trim(limpar($_POST['email']));
                 $senha =trim(limpar($_POST['senha']));
 
@@ -139,15 +140,15 @@ Class AccountsController
                     ":email" => $email
                 ];
 
-                $resultado = $database->query("SELECT * FROM USUARIO WHERE email=:email",$parametro);
+                $resultado = $this->database->query("SELECT * FROM USUARIO WHERE email=:email",$parametro);
                 
                 if (!$resultado) {
                     $_SESSION["ERROR_DATA_LOGIN"] = "Email ou senha está incorretos";
-                    header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
+                    header('Location:' .PROTOCOLO. '://'.PATH.'/accounts/login');
                 } else {
                     if (!password_verify($senha,$resultado[0]['senha'])) {
                         $_SESSION["ERROR_DATA_LOGIN"] = "Email ou, a senha está incorreto";
-                        header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
+                        header('Location:' .PROTOCOLO. '://'.PATH.'/accounts/login');
                     } else {
                         $_SESSION['user'] = $resultado[0]['id_usuario'];
                         $_SESSION['usuario'] = $resultado[0]['usuario'];

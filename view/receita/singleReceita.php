@@ -1,10 +1,18 @@
-
 <?php
 $database = ReceitaController::getConnect();
 
 $receita = $database->query("SELECT * FROM RECEITA WHERE id_receita=:id", [':id' => $id]);
+
 $criador = $database->query("SELECT usuario,nome,sobrenome FROM USUARIO WHERE id_usuario=:id", [":id" => $receita[0]['id_usuario']]);
+
 $ingredientes = explode(',', $receita[0]['ingredientes']);
+
+$receitas_salvas = $database->query("SELECT receitas_salvas FROM USUARIO WHERE id_usuario=:id",[':id' => $_SESSION['user']]);
+
+
+$receitas_salvas =explode(";",$receitas_salvas[0]['receitas_salvas']);
+
+
 ?>
 
 <?php if (isset($_SESSION["SUCCESS_DATA_IN"])) : ?>
@@ -32,26 +40,26 @@ endif;
             <div class="col-md-7 col-12">
                 <div class="single-receita-content">
                     <img src="<?= PROTOCOLO . "://" . PATH . "/" . $receita[0]['foto_receita'] ?>" width="100%" height="300px">
-                    <div class="border p-3">  
+                    <div class="border p-3">
                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                         <div id="singleOption">
                             <div class="col-md-2 p-0 col-3">
                                 <ul class="list-group">
-                                <?php if ($_SESSION['user'] == $receita[0]['id_usuario']) : ?>
-                                    <a href="<?= PROTOCOLO ?>://<?= PATH ?>/receita/edit/<?= $receita[0]['id_receita'] ?>">
-                                        <li class="list-group-item">Editar</li>
-                                    </a>
-                                    
-                                    <a id="trash-Receita" href="#" name="<?= $receita[0]['id_receita'] ?>">
-                                    <li class="list-group-item">Excluir</li> </a>
-                                   <?php endif; ?>
+                                    <?php if ($_SESSION['user'] == $receita[0]['id_usuario']) : ?>
+                                        <a href="<?= PROTOCOLO ?>://<?= PATH ?>/receita/edit/<?= $receita[0]['id_receita'] ?>">
+                                            <li class="list-group-item">Editar</li>
+                                        </a>
+
+                                        <a id="trash-Receita" href="#" name="<?= $receita[0]['id_receita'] ?>">
+                                            <li class="list-group-item">Excluir</li>
+                                        </a>
+                                    <?php endif; ?>
 
                                     <?php if ($_SESSION['user'] != $receita[0]['id_usuario']) : ?>
-                                   <a href="<?= PROTOCOLO ?>://<?= PATH ?>/receita/edit/<?= $receita[0]['id_receita'] ?>">
-                                        <li class="list-group-item">Salvar Receita</li>
-                                    </a>
+                                        <li class="list-group-item" id="salvarReceita" type="<?= (in_array($receita[0]['id_receita'],$receitas_salvas) ? "remove" : "add")  ?>" user="<?=$_SESSION['user']?>" identificacao="<?=$receita[0]['id_receita']?>">
+                                        <?= (in_array($receita[0]['id_receita'],$receitas_salvas) ? "Remove Receita" : "Salva Receita")  ?></li>
                                     <?php endif; ?>
-                                   
+
                                 </ul>
                             </div>
                         </div>
@@ -76,6 +84,9 @@ endif;
                     </div>
 
                 </div>
+            </div>
+            <div class="col-md-5">
+                <p id="msg-receita"></p>
             </div>
         </div>
     </div>
