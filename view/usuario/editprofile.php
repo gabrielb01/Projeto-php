@@ -2,11 +2,11 @@
     <div class="container-flex-left">
         <div class="container-nav">
             <div class="list-group">
-                <a href="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/edit/editar-perfil" class="list-group-item list-group-item-action <?= $acao == "editar-perfil" ? "active" : "" ?>">Editar Perfil</a>
-                <a class="list-group-item list-group-item-action <?= $acao == "editar-usuario" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/edit/editar-usuario">Editar Usuario</a>
-                <a class="list-group-item list-group-item-action <?= $acao == "editar-email" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/edit/editar-email">Editar Email</a>
-                <a class="list-group-item list-group-item-action <?= $acao == "editar-senha" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/edit/editar-senha">Editar Senha</a>
-                <a class="list-group-item list-group-item-action <?= $acao == "excluir-conta" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/edit/excluir-conta">Excluir Conta</a>
+                <a href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-perfil" class="list-group-item list-group-item-action <?= $acao == "editar-perfil" ? "active" : "" ?>">Editar Perfil</a>
+                <a class="list-group-item list-group-item-action <?= $acao == "editar-usuario" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-usuario">Editar Usuario</a>
+                <a class="list-group-item list-group-item-action <?= $acao == "editar-email" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-email">Editar Email</a>
+                <a class="list-group-item list-group-item-action <?= $acao == "editar-senha" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-senha">Editar Senha</a>
+                <a class="list-group-item list-group-item-action <?= $acao == "excluir-conta" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/excluir-conta">Excluir Conta</a>
 
             </div>
         </div>

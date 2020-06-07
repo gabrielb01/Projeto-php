@@ -4,9 +4,10 @@ class CategoriaController
 {
 
 
-    public $database;
+    private $database;
+    private $title;
 
-    function __construct()
+    public function __construct()
     {
         $this->database = new Database();
 
@@ -20,55 +21,75 @@ class CategoriaController
         
 
         if (!isset($_SESSION['user'])) {
-            header('Location: ' .PROTOCOLO. '://'.PATH.'/autenticacao/login');
+            header('Location: ' .PROTOCOLO. '://'.PATH.'/accounts/login');
         }
     }
 
+    public function setTitle($title)
+    {
+        $this->title =$title;
+    }
 
-    function getConnect()
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setStyle($style)
+    {
+        $this->style = $style;
+    }
+
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
+
+    public function getConnect()
     {
         return $this->database;
     }
 
 
-    function index()
+    public function index()
      {
         require_once "view/head.php";
 
         require_once "view/navegacao.php";        
 
-        require_once "view/categoria.php";
+        require_once "view/categoria/categoria.php";
 
         require_once "view/footer.php";
     }
 
 
-    function new()
+    public function new()
     {
         require_once "view/head.php";
 
         require_once "view/navegacao.php";        
 
-        require_once "view/novaCategoria.php";
+        require_once "view/categoria/novaCategoria.php";
 
         require_once "view/footer.php";   
     }
 
 
-    function edit($id)
+    public function edit($id)
     {
         
         require_once "view/head.php";
        
         require_once "view/navegacao.php";        
        
-        require_once "view/editcategoria.php";
+        require_once "view/categoria/editcategoria.php";
        
         require_once "view/footer.php";
           
     }
 
-    function show($name)
+    public function show($name)
     {
         require_once "view/head.php";
        
@@ -80,7 +101,7 @@ class CategoriaController
     }
 
 
-    function validarNovaCategoria()
+    public function validarNovaCategoria()
     {
         if ($_POST) {
             if ($_POST['categoria']=="" || $_POST['descricao']=="") {
@@ -115,7 +136,7 @@ class CategoriaController
         }
     }
 
-    function validarEdit($id)
+    public function validarEdit($id)
     {
         if($_POST) {
             if ($_POST['categoria']=="" || $_POST['descricao']=="") {
@@ -152,7 +173,7 @@ class CategoriaController
         }
     }
 
-    function excluir($id)
+    public function excluir($id)
     {
         $parametro = [
             ":id"   => $id

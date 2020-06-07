@@ -1,0 +1,18 @@
+
+.center {
+   height: 100vh;
+   width: 100%;
+   display: flex;
+   align-items: center; 
+
+} 
+
+.form-autenticao {
+    border: 1px solid rgba(51, 51, 51, 0.616);
+    border-radius: 10px;
+    padding: 25px 10px;
+    background-color: #fff;  
+    box-shadow: 0 0 5px rgba(0, 0, 255, 0.612);
+    width: 600px;
+    margin-left: 110%;
+}

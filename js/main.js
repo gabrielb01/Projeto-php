@@ -81,8 +81,16 @@ $(document).ready(function() {
     });
 
 
-    $(".edit-image").click(function() {
-        alert("OK");
+    $(".background-img").click(function() {
+        $(".div-popup").css("top","25%");
+        $(".fundo").css("background-color","rgba(0,0,0,0.75)");
+        $("body").css("overflow-y","hidden");
+    });
+
+    $(".close").click(function() {
+        $(".div-popup").css("top","-60%");
+        $(".fundo").css("background-color","rgba(0,0,0,0.0)");
+        $("body").css("overflow-y","scroll");
     });
 
 

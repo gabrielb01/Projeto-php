@@ -1,12 +1,13 @@
-<div class="div-popup">
+<!-- <div class="div-popup">
     <div class="form">
+        <div class="close">&times</div>
         <h3>Perfil</h3>
         <img id="imagemPerfil" width="200px" height="200px" />
-        <input type="file" name="fotoReceita" accept="image/*" id="fotoReceita" required /><br>
+        <input type="file" name="fotoReceita" accept="image/*" id="fotoPerfil" required /><br>
         <input type="submit" value="Adicionar" class="btn btn-success ml-5 mt-2">
     </div>
 </div>
-
+<div class="fundo"></div> -->
 
 <div class="background-img" style="background-image:url('<?= PROTOCOLO ?>://<?= PATH ?>/img/default/a.png')">
     <div class="profile-flex">

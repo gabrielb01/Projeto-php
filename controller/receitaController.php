@@ -3,70 +3,93 @@
 class ReceitaController
 {
 
-    public $database;
+    private $database;
+    private $title;
+    private $style;
 
-    function __construct()
+    public function __construct()
     {
 
         $this->database = new Database();
 
         if (!isset($_SESSION['user'])) {
-            header('Location: ' . PROTOCOLO . '://' . PATH . '/autenticacao/login');
+            header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
         }
+    }
+
+    public function setTitle($title)
+    {
+        $this->title =$title;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setStyle($style)
+    {
+        $this->style = $style;
+    }
+
+    public function getStyle()
+    {
+        return $this->style;
     }
 
 
 
-    function getConnect()
+    public function getConnect()
     {
         return $this->database;
     }
 
-    function index()
+    public function index()
     {
+
         require_once "view/head.php";
 
         require_once "view/navegacao.php";
 
-        require_once "view/receita.php";
+        require_once "view/receita/receita.php";
 
 
         require_once "view/footer.php";
     }
 
-    function detalhes()
+    public function detalhes()
     {
         require_once "view/head.php";
 
         require_once "view/navegacao.php";
 
-        require_once "view/receitas.php";
+        require_once "view/receita/receitas.php";
 
 
         require_once "view/footer.php";
     }
 
-    function new()
+    public function new()
     {
         require_once "view/head.php";
 
         require_once "view/navegacao.php";
 
-        require_once "view/novareceita.php";
+        require_once "view/receita/novareceita.php";
 
 
         require_once "view/footer.php";
     }
 
 
-    function single($id)
+    public function single($id)
     {
         //Mostrar uma única receita
         require_once "view/head.php";
 
         require_once "view/navegacao.php";
 
-        require_once "view/singleReceita.php";
+        require_once "view/receita/singleReceita.php";
 
 
         require_once "view/footer.php";
@@ -79,19 +102,19 @@ class ReceitaController
 
         require_once "view/navegacao.php";
 
-        require_once "view/editreceita.php";
+        require_once "view/receita/editreceita.php";
 
 
         require_once "view/footer.php";
     }
 
-    function Search()
+    public function Search()
     {
         require_once "view/head.php";
 
         require_once "view/navegacao.php";
 
-        require_once "view/searchreceita.php";
+        require_once "view/receita/searchreceita.php";
 
 
         require_once "view/footer.php";
@@ -99,7 +122,7 @@ class ReceitaController
 
 
 
-    function validarNovaReceita()
+    public function validarNovaReceita()
     {
         if ($_POST) {
             if ($_POST['nomeReceita'] == "" || $_POST['ingredientes'] == "" || $_POST['descricao'] == "") {
@@ -156,7 +179,8 @@ class ReceitaController
             new ErrorController();
         }
     }
-    function validarEditReceita($id)
+    
+    public function validarEditReceita($id)
     {
         if ($_POST) {
             if ($_POST['nomeReceita'] == "" || $_POST['ingredientes'] == "" || $_POST['descricao'] == "") {
@@ -233,7 +257,7 @@ class ReceitaController
     }
 
 
-    function excluir($id)
+    public function excluir($id)
     {
         $parametro = [
             ":id"   => $id

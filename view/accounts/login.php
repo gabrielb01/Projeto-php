@@ -39,7 +39,7 @@ endif; ?>
 <div class="container-fluid">
     <div class="center">
         <div class="col-sm-3 col-xs-3">
-            <form class="form-autenticao" method="post" action="http://<?= PATH ?>/autenticacao/validarLogin">
+            <form class="form-autenticao" method="post" action="http://<?= PATH ?>/accounts/validarLogin">
                 <div class="form-group">
                     <h2>Login</h2>
                 </div>

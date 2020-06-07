@@ -11,12 +11,12 @@
 
   <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/lib/bootstrap/compiler/bootstrap.css">
   <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/main.css">
-  <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/autenticacao.css">
-  <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/usuario.css">
-  <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/categoria.css">
-  <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/receita.css">
+  
+  <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/<?=self::getStyle();?>.css">
 
-  <title>Conscious Vegan</title>
+ 
+
+  <title><?=self::getTitle();?></title>
 </head>
 
 <body>

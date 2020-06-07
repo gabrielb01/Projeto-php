@@ -1,43 +1,69 @@
 <?php
 
 
-Class AutenticacaoController
+Class AccountsController
 {
 
+    private $title;
 
-     function __construct()
+    private $style;
+
+    public function __construct()
     {
         if (isset($_SESSION['user'])) {
             header('Location:' .PROTOCOLO. '://'.PATH.'');
         }
+
     }
 
-    function login()
+    public function setTitle($title)
+    {
+        $this->title =$title;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+
+    public function setStyle($style)
+    {
+        $this->style =$style;
+    }
+
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
+
+    public function login()
     {
         require_once "view/head.php";
 
         require_once "view/navegacao.php";        
 
-        require_once "view/login.php";
+        require_once "view/accounts/login.php";
 
 
         require_once "./view/footer.php";
     }
 
-    function cadastro()
+    public function cadastro()
     {
         require_once "view/head.php";
 
         require_once "view/navegacao.php";        
 
-        require_once "view/cadastro.php";
+        require_once "view/accounts/cadastro.php";
 
 
         require_once "view/footer.php";
         
     }
 
-    function validarCadastro() 
+    public function validarCadastro() 
     {
 
 
@@ -89,7 +115,7 @@ Class AutenticacaoController
                 
             } else {
                 $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
-                header('Location:' .PROTOCOLO. '://'.PATH.'/autenticacao/cadastro');
+                header('Location:' .PROTOCOLO. '://'.PATH.'/accounts/cadastro');
             }
         } else {
             new ErrorController();
@@ -98,7 +124,7 @@ Class AutenticacaoController
 
 
 
-    function validarLogin()
+    public function validarLogin()
     {
         if ($_POST) {
             if ($_POST['email'] == "" || $_POST['senha'] == "") {
@@ -127,7 +153,7 @@ Class AutenticacaoController
                         $_SESSION['usuario'] = $resultado[0]['usuario'];
                         $_SESSION['nome_full'] = $resultado[0]['nome'] . " ". $resultado[0]['sobrenome'];
                         $_SESSION['permissao'] = $resultado[0]['permissao'];
-                        header('Location:' .PROTOCOLO. '://'.PATH.'/usuario/profile/'.$_SESSION['usuario'].'');
+                        header('Location:' .PROTOCOLO. '://'.PATH.'/u/profile/'.$_SESSION['usuario'].'');
                     }
                 }
             }
@@ -140,7 +166,7 @@ Class AutenticacaoController
 
     }
 
-    function logout()
+    public function logout()
     {
        if (isset($_SESSION['user'])) {
             unset($_SESSION['user']);

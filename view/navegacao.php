@@ -5,7 +5,7 @@ if (isset($_SESSION['permissao'])) {
 }
 ?>
 
-<nav class="navbar navbar-fixed-top navbar-expand-lg navbar-dark bg-gradient-success">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-gradient-success">
   <div class="container">
     <a href="<?= PROTOCOLO ?>://<?= PATH ?>/" class="navbar-brand h1 mb-0"> Conscious Vegan</a>
 
@@ -24,10 +24,10 @@ if (isset($_SESSION['permissao'])) {
 
         <?php if (!isset($_SESSION['user'])) : ?>
           <li class="nav-item">
-            <a class="nav-link" href="<?= PROTOCOLO ?>://<?= PATH ?>/autenticacao/login">Login</a>
+            <a class="nav-link" href="<?= PROTOCOLO ?>://<?= PATH ?>/accounts/login">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?= PROTOCOLO ?>://<?= PATH ?>/autenticacao/cadastro">Cadastre-se</a>
+            <a class="nav-link" href="<?= PROTOCOLO ?>://<?= PATH ?>/accounts/cadastro">Cadastre-se</a>
           </li>
 
         <?php endif; ?>
@@ -44,10 +44,10 @@ if (isset($_SESSION['permissao'])) {
 
 
           <li class="nav-item">
-            <a class="nav-link" href="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/profile/<?= $_SESSION['usuario'] ?>">Perfil</a>
+            <a class="nav-link" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/profile/<?= $_SESSION['usuario'] ?>">Perfil</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="<?= PROTOCOLO ?>://<?= PATH ?>/autenticacao/logout">Sair</a>
+            <a class="nav-link" href="<?= PROTOCOLO ?>://<?= PATH ?>/accounts/logout">Sair</a>
           </li>
 
         <?php endif; ?>

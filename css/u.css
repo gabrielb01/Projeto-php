@@ -1,3 +1,5 @@
+/* USUÁRIO STYLE =============================================================================================== */
+
 /* usuário home */
 
 .background-img {
@@ -54,6 +56,8 @@
  /* usuario editar */
 
 
+ /* MODAL */
+
  .edit-image {
      font-size: 95px;
      margin-left: 22px;
@@ -63,15 +67,34 @@
      cursor: pointer;
  }
 
+ .fundo {
+     position: fixed;
+     top: 0;
+     left: 0;
+     right:0;
+     bottom: 0;
+ }
+
  .div-popup {
      position: fixed;
+     z-index: 99;
      left: 30%;
-     top: 30%;
+     top: -60%;
+     opacity: 0;
      padding: 20px;
      border: 1px solid #333;
      background-color: #fff;
      border-radius: 6px;
+     transition: top 1s;
  }
+
+ .close {
+     cursor: pointer;
+ }
+
+
+
+ /* MODAL */
 
  .edit-image:hover {
     opacity: 1;
