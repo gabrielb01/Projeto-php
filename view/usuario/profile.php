@@ -18,7 +18,7 @@
         </div>
         <h3><?= $_SESSION['nome_full'] ?></h3>
     </div>
-    <a href="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/edit/editar-perfil" class="perfil-edit">Editar Perfil</a>
+    <a href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-perfil" class="perfil-edit">Editar Perfil</a>
 </div>
 
 <div class="container">
