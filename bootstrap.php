@@ -12,6 +12,7 @@ Class Bootstrap
             require_once("./controller/homeController.php");
             $controller = new HomeController();
             $controller->setTitle("Conscious Vegan");
+            $controller->setStyle('home');
             $controller->index();
         } else {
             if (file_exists("./controller/" . $url[0]. "Controller.php")) {
