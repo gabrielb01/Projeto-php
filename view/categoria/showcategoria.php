@@ -1,14 +1,7 @@
 <br><br>
-
 <div class="container">
     <div class="row">
-        <?php
-
-        $database = CategoriaController::getConnect();
-
-        $receitas = $database->query("SELECT * FROM RECEITA WHERE categoria=:categoria", [':categoria' => $name]);
-
-        foreach ($receitas as $receita) :
+        <?php foreach ($this->receitas as $receita) :
         ?>
             <div class="col-md-3 col-sm-4 col-12">
                 <div class="card" style="width: 18rem;">

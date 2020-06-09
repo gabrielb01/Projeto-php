@@ -4,12 +4,7 @@
 <div class="container">
 <div class="row">
     <?php
-
-    $database = ReceitaController::getConnect();
-
-    $receitas = $database->query("SELECT * FROM RECEITA ORDER BY criando_em DESC");
-
-    foreach ($receitas as $receita) :
+    foreach ($this->receitas as $receita) :
     ?>
         <div class="col-md-3 col-sm-4 col-12">
             <div class="card" style="width: 18rem;">

@@ -4,9 +4,9 @@
 Class AccountsController
 {
 
-    private $title;
+    public $title;
 
-    private $style;
+    public $style;
 
     private $database;
 
@@ -20,51 +20,18 @@ Class AccountsController
 
     }
 
-    public function setTitle($title)
-    {
-        $this->title =$title;
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-
-    public function setStyle($style)
-    {
-        $this->style =$style;
-    }
-
-    public function getStyle()
-    {
-        return $this->style;
-    }
 
 
     public function login()
     {
-        require_once "view/head.php";
-
-        require_once "view/navegacao.php";        
-
-        require_once "view/accounts/login.php";
-
-
-        require_once "./view/footer.php";
+        $this->view = new View("accounts/login");
+        $this->view->render($this->title,$this->style);
     }
 
     public function cadastro()
     {
-        require_once "view/head.php";
-
-        require_once "view/navegacao.php";        
-
-        require_once "view/accounts/cadastro.php";
-
-
-        require_once "view/footer.php";
-        
+        $this->view = new View("accounts/cadastro");
+        $this->view->render($this->title,$this->style);
     }
 
     public function validarCadastro() 
@@ -143,11 +110,11 @@ Class AccountsController
                 $resultado = $this->database->query("SELECT * FROM USUARIO WHERE email=:email",$parametro);
                 
                 if (!$resultado) {
-                    $_SESSION["ERROR_DATA_LOGIN"] = "Email ou senha está incorretos";
+                    $_SESSION["ERROR_DATA_OUT"] = "E-mail ou senha esta incorreta";
                     header('Location:' .PROTOCOLO. '://'.PATH.'/accounts/login');
                 } else {
                     if (!password_verify($senha,$resultado[0]['senha'])) {
-                        $_SESSION["ERROR_DATA_LOGIN"] = "Email ou, a senha está incorreto";
+                        $_SESSION["ERROR_DATA_OUT"] = "E-mail ou senha esta incorreta";
                         header('Location:' .PROTOCOLO. '://'.PATH.'/accounts/login');
                     } else {
                         $_SESSION['user'] = $resultado[0]['id_usuario'];

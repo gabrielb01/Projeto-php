@@ -9,18 +9,17 @@ Class Bootstrap
     {
 
         if ($url == "") {
-            require_once("./controller/homeController.php");
             $controller = new HomeController();
-            $controller->setTitle("Conscious Vegan");
-            $controller->setStyle('home');
+            $controller->title ="Conscious Vegan";
+            $controller->style ='home';
             $controller->index();
         } else {
+            $url[0]= ucfirst($url[0]);
             if (file_exists("./controller/" . $url[0]. "Controller.php")) {
-                require_once "./controller/" . $url[0]. "Controller.php";
                 $controller = $url[0]."Controller";
                 $controller = new $controller();
-                $controller->setTitle(ucfirst($url[0]));
-                $controller->setStyle($url[0]);
+                $controller->title =ucfirst($url[0]);
+                $controller->style = $url[0];
                 if(!isset($url[1])) {
                     $controller->index();
                  } else {

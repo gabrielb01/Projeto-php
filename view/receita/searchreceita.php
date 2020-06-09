@@ -1,13 +1,4 @@
-<?php
-
-$database = ReceitaController::getConnect();
-
-$search =trim(limpar($_POST['search']));
-
-$receitas = $database->query("SELECT * FROM RECEITA WHERE titulo LIKE '%" . $search . "%'");
-
-echo "<div class='container p-2'><div class='row'>";
-foreach ($receitas as $receita) :
+<?php foreach ($this->receitas as $receita) :
 ?>
     <div class="col-md-3 col-sm-4 col-12">
         <div class="card" style="width: 18rem;">
@@ -21,5 +12,4 @@ foreach ($receitas as $receita) :
     </div>
     <?php endforeach; ?>
 
-    </div>
-</div>
+  

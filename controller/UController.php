@@ -3,8 +3,8 @@
 class UController
 {
 
-    private $title;
-    private $style;
+    public $title;
+    public $style;
     private $database;
 
     public function __construct()
@@ -13,29 +13,11 @@ class UController
             header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
         }
 
-        $this->setTitle($_SESSION['nome_full']);
+        $this->title =$_SESSION['nome_full'];
         $this->database = new Database();
     }
 
-    function setTitle($title)
-    {
-        $this->title = $title;
-    }
-
-    function getTitle()
-    {
-        return $this->title;
-    }
-
-    public function setStyle($style)
-    {
-        $this->style = $style;
-    }
-
-    public function getStyle()
-    {
-        return $this->style;
-    }
+   
     public function profile()
     {
 
@@ -43,34 +25,44 @@ class UController
         $dados = $this->database->query("SELECT * FROM USUARIO WHERE id_usuario = :id", [":id" => $_SESSION['user']]);
 
         $this->title = $_SESSION['nome_full'];
-
-        require_once "view/head.php";
-
-        require_once "view/navegacao.php";
-
-        require_once "view/usuario/profile.php";
-
-
-        require_once "view/footer.php";
+        $this->view = new View("usuario/profile");
+        $this->view->dados = $dados;
+        $this->view->render($this->title,$this->style);
     }
 
 
     public function edit($acao)
     {
-        $this->setTitle($_SESSION['nome_full']);
+        $this->title = $_SESSION['nome_full'];
 
         $database = new Database();
 
         $dados = $this->database->query("SELECT * FROM USUARIO WHERE id_usuario = :id", [":id" => $_SESSION['user']]);
 
-        require_once "view/head.php";
+        $this->view = new View("usuario/editprofile");
+        $this->view->dados = $dados;
+        $this->view->acao = $acao;
+        $this->view->render($this->title,$this->style);
+    }
 
-        require_once "view/navegacao.php";
 
-        require_once "view/usuario/editprofile.php";
+    public function listar()
+    {
+        // Listar todas as receitas salvas pelo usuário.
+        $dados = $this->database->query("SELECT receitas_salvas FROM USUARIO WHERE id_usuario = :id", [":id" => $_SESSION['user']]);
 
+        $lista_receitas = explode(';',$dados[0]['receitas_salvas']);
 
-        require_once "view/footer.php";
+        $lista_receitas = implode(",",$lista_receitas);
+
+        $receitas = $this->database->query("SELECT * FROM RECEITA WHERE id_receita IN (".$lista_receitas.")");
+
+        $this->title = "Receitas Salvas";
+       
+        $this->view = new View("usuario/listar");
+        $this->view->dados = $receitas;
+
+        $this->view->render($this->title,$this->style);
     }
 
 
@@ -103,7 +95,7 @@ class UController
 
 
 
-                        $_SESSION["SUCCESS_DATA_IN"] = "Foto do perfil alterada com sucesso!";
+                        $_SESSION["CADASTRO_SUCESSO"] = "Foto do perfil alterada com sucesso!";
                         header('Location: ' . PROTOCOLO . '://' . PATH . '/u/profile');
                     } else {
                         $_SESSION["ERROR_DATA_OUT"] = "Erro ao tentar alterar a foto do perfil, tente novamente!";
@@ -129,8 +121,8 @@ class UController
                         ":id" => $_SESSION['user']
                     ];
                     $this->database->exe_query("UPDATE USUARIO SET nome=:nome,sobrenome=:sobrenome WHERE id_usuario=:id", $parametro);
-
-                    $_SESSION["EDIT_SUCCESS"] = "Tudo foi salvo!";
+                    $_SESSION['nome_full'] =$nome . ' ' .$sobrenome;
+                    $_SESSION["CADASTRO_SUCESSO"] = "Tudo foi salvo!";
                     header('Location: ' . PROTOCOLO . '://' . PATH . '/u/edit/editar-perfil');
                 } else {
                     $_SESSION["ERROR_DATA_OUT"] = "Nenhum Campo pode ficar em branco!";
@@ -158,7 +150,7 @@ class UController
                             ];
                             $this->database->exe_query("UPDATE USUARIO SET usuario=:usuario WHERE id_usuario=:id", $parametro);
                             $_SESSION['usuario'] = $_POST['usuario'];
-                            $_SESSION["EDIT_SUCCESS"] = "Tudo foi salvo!";
+                            $_SESSION["CADASTRO_SUCESSO"] = "Tudo foi salvo!";
                             header('Location: ' . PROTOCOLO . '://' . PATH . '/u/edit/editar-usuario');
                         }
                     }
@@ -193,7 +185,7 @@ class UController
                                 ":id" => $_SESSION['user']
                             ];
                             $this->database->exe_query("UPDATE USUARIO SET email=:email WHERE id_usuario=:id", $parametro);
-                            $_SESSION["EDIT_SUCCESS"] = "Tudo foi salvo!";
+                            $_SESSION["CADASTRO_SUCESSO"] = "Tudo foi salvo!";
                             header('Location: ' . PROTOCOLO . '://' . PATH . '/u/edit/editar-email');
                         }
                     }
@@ -228,22 +220,27 @@ class UController
                                     ":id" => $_SESSION['user']
                                 ];
                                 $this->database->exe_query("UPDATE USUARIO SET senha=:senha WHERE id_usuario=:id", $parametro);
-                                $_SESSION["EDIT_SUCCESS"] = "Tudo foi salvo!";
+                                $_SESSION["CADASTRO_SUCESSO"] = "Tudo foi salvo!";
                                 header('Location: ' . PROTOCOLO . '://' . PATH . '/u/edit/editar-senha');
                             }
                         }
                     }
                 }
             } else if ($_POST['form'] == "excluir") {
-                $parametro = [
-                    ":id" => $_SESSION['user']
-                ];
-                $this->database->exe_query("DELETE FROM USUARIO WHERE id_usuario=:id", $parametro);
-                $_SESSION["EDIT_SUCCESS"] = "Sua conta foi excluída!";
-                unset($_SESSION['user']);
-                unset($_SESSION['usuario']);
-                unset($_SESSION['nome_full']);
-                header('Location:' . PROTOCOLO . '://' . PATH . '');
+
+                if (isset($_SESSION['user'])) {
+                    $parametro = [
+                        ":id" => $_SESSION['user']
+                    ];
+                    $this->database->exe_query("DELETE FROM USUARIO WHERE id_usuario=:id", $parametro);
+                    $_SESSION["CADASTRO_SUCESSO"] = "Sua conta foi excluída!";
+                    unset($_SESSION['user']);
+                    unset($_SESSION['usuario']);
+                    unset($_SESSION['nome_full']);
+                    header('Location:' . PROTOCOLO . '://' . PATH . '');
+                } else {
+                    header("Location:" . PROTOCOLO . "://" . PATH . "/error");   
+                }
             }
         } else {
             header("Location:" . PROTOCOLO . "://" . PATH . "/error");

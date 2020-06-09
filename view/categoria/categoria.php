@@ -15,7 +15,7 @@
             </thead>
             <tbody>
                 <?php
-                    $database = CategoriaController::getConnect();
+                    $database = $this->database;
                     $resultado = $database->query("SELECT * FROM CATEGORIA");
                     foreach ($resultado as $value):                
                 ?>

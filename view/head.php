@@ -12,11 +12,11 @@
   <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/lib/bootstrap/compiler/bootstrap.css">
   <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/main.css">
   
-  <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/<?=self::getStyle();?>.css">
+  <link rel="stylesheet" href="<?= PROTOCOLO ?>://<?= PATH ?>/css/<?=self::$style?>.css">
 
  
 
-  <title><?=self::getTitle();?></title>
+  <title><?=self::$title;?></title>
 </head>
 
 <body>

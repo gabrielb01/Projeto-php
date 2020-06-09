@@ -1,28 +1,3 @@
-<?php if (isset($_SESSION["ERROR_DATA_PASSWORD"])) : ?>
-    <div class="alert alert-dark" role="alert">
-        <?php echo $_SESSION["ERROR_DATA_PASSWORD"]; ?>
-    </div>
-
-<?php
-
-    unset($_SESSION["ERROR_DATA_PASSWORD"]);
-
-endif; ?>
-
-<?php if (isset($_SESSION["ERROR_DATA_OUT"])) : ?>
-
-    <div class="alert alert-dark" role="alert">
-        <?php echo $_SESSION["ERROR_DATA_OUT"]; ?>
-
-    </div>
-
-<?php
-
-    unset($_SESSION["ERROR_DATA_OUT"]);
-
-endif; ?>
-
-
 <div class="container-fluid">
     <div class="center">
         <div class="col-sm-3 col-xs-3">

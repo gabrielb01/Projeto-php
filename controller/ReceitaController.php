@@ -4,8 +4,8 @@ class ReceitaController
 {
 
     private $database;
-    private $title;
-    private $style;
+    public $title;
+    public $style;
 
     public function __construct()
     {
@@ -17,104 +17,100 @@ class ReceitaController
         }
     }
 
-    public function setTitle($title)
-    {
-        $this->title =$title;
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    public function setStyle($style)
-    {
-        $this->style = $style;
-    }
-
-    public function getStyle()
-    {
-        return $this->style;
-    }
-
-
-
-    public function getConnect()
-    {
-        return $this->database;
-    }
+    
 
     public function index()
     {
+        //Mostrar todas as receitas
 
-        require_once "view/head.php";
+        $receitas = $this->database->query("SELECT * FROM RECEITA ORDER BY criando_em DESC");
 
-        require_once "view/navegacao.php";
-
-        require_once "view/receita/receita.php";
-
-
-        require_once "view/footer.php";
+        $this->view = new View("receita/receita");
+        $this->view->receitas = $receitas;
+        $this->view->render($this->title,$this->style);
     }
 
     public function detalhes()
     {
-        require_once "view/head.php";
+        //Mostrar apenas as receitas adicionadas pelo o usuário
 
-        require_once "view/navegacao.php";
+        $receitas = $this->database->query("SELECT * FROM RECEITA WHERE id_usuario=:id ORDER BY criando_em DESC", [':id' => $_SESSION['user']]);
 
-        require_once "view/receita/receitas.php";
-
-
-        require_once "view/footer.php";
+        $this->view = new View("receita/receitas");
+        $this->view->receitas = $receitas;
+        $this->view->render($this->title,$this->style);
     }
 
     public function new()
     {
-        require_once "view/head.php";
-
-        require_once "view/navegacao.php";
-
-        require_once "view/receita/novareceita.php";
-
-
-        require_once "view/footer.php";
+        $this->view = new View("receita/novareceita");
+        $this->view->database = $this->database;
+        $this->view->render($this->title,$this->style);
     }
 
 
     public function single($id)
     {
         //Mostrar uma única receita
-        require_once "view/head.php";
+        
 
-        require_once "view/navegacao.php";
+        $receita = $this->database->query("SELECT * FROM RECEITA WHERE id_receita=:id", [':id' => $id]);
 
-        require_once "view/receita/singleReceita.php";
+        if (count($receita)==0) { 
+            header("Location:".PROTOCOLO."://".PATH."/error");
+        }
+        
+        $criador = $this->database->query("SELECT usuario,nome,sobrenome FROM USUARIO WHERE id_usuario=:id", [":id" => $receita[0]['id_usuario']]);
+
+        $ingredientes = explode(',', $receita[0]['ingredientes']);
+
+        $receitas_salvas = $this->database->query("SELECT receitas_salvas FROM USUARIO WHERE id_usuario=:id", [':id' => $_SESSION['user']]);
 
 
-        require_once "view/footer.php";
+        $receitas_salvas = explode(";", $receitas_salvas[0]['receitas_salvas']);
+
+        $this->view = new View("receita/singleReceita");
+        $this->view->receita = $receita;
+        $this->view->criador = $criador;
+        $this->view->ingredientes = $ingredientes;
+        $this->view->receitas_salvas = $receitas_salvas;
+        $this->view->render($this->title,$this->style);
+        
     }
 
 
     function edit($id)
     {
-        require_once "view/head.php";
 
-        require_once "view/navegacao.php";
+        $receita = $this->database->query("SELECT * FROM RECEITA WHERE id_receita=:id", [":id" => $id]);
+        $ingredientes = explode(',', $receita[0]['ingredientes']);
 
-        require_once "view/receita/editreceita.php";
+        if (count($receita) == 0) {
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+        }
 
-
-        require_once "view/footer.php";
+        $this->view = new View("receita/editreceita");
+        $this->view->receita = $receita;
+        $this->view->ingredientes = $ingredientes;
+        $this->view->database = $this->database;
+        $this->view->render($this->title,$this->style);
     }
 
     public function Search()
     {
-        require_once "view/head.php";
 
-        require_once "view/navegacao.php";
+        $search = trim(limpar($_POST['search']));
 
-        require_once "view/receita/searchreceita.php";
+        $receitas = $this->database->query("SELECT * FROM RECEITA WHERE titulo LIKE '%" . $search . "%'");
+
+        if (!count($receitas) == 0) {
+            $this->view = new View("receita/searchreceita");
+            $this->view->receitas = $receitas;
+            $this->view->render($this->title,$this->style);
+        } else {
+
+            echo "<h2>Nenhum resultado encontrado!</h2>";
+        }
 
 
         require_once "view/footer.php";
@@ -166,7 +162,7 @@ class ReceitaController
 
 
 
-                            $_SESSION["SUCCESS_DATA_IN"] = "Receita adicionada com sucesso!";
+                            $_SESSION["CADASTRO_SUCESSO"] = "Receita adicionada com sucesso!";
                             header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/detalhes');
                         } else {
                             $_SESSION["ERROR_DATA_OUT"] = "Erro ao tentar enviar a imagem, tente novamente!";
@@ -176,10 +172,10 @@ class ReceitaController
                 }
             }
         } else {
-            header("Location:".PROTOCOLO."://".PATH."/error");
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
         }
     }
-    
+
     public function validarEditReceita($id)
     {
         if ($_POST) {
@@ -193,7 +189,7 @@ class ReceitaController
                 $descricao = trim(limpar($_POST['descricao']));
 
 
-                if ($_FILES['fotoReceita']['name']!="") {
+                if ($_FILES['fotoReceita']['name'] != "") {
                     $type_in = ['png', 'jpg', 'jpeg'];
                     $tipo_image = explode("/", $_FILES["fotoReceita"]["type"]);
                     $tipo_image[1] = strtolower($tipo_image[1]);
@@ -225,7 +221,7 @@ class ReceitaController
 
 
 
-                                $_SESSION["SUCCESS_DATA_IN"] = "Receita editada com sucesso!";
+                                $_SESSION["CADASTRO_SUCESSO"] = "Receita editada com sucesso!";
                                 header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/single/' . $id);
                             } else {
                                 $_SESSION["ERROR_DATA_OUT"] = "Erro ao tentar enviar a imagem, tente novamente!";
@@ -247,23 +243,29 @@ class ReceitaController
 
 
 
-                    $_SESSION["SUCCESS_DATA_IN"] = "Receita editada com sucesso!";
+                    $_SESSION["CADASTRO_SUCESSO"] = "Receita editada com sucesso!";
                     header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/single/' . $id);
                 }
             }
         } else {
-            header("Location:".PROTOCOLO."://".PATH."/error");
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
         }
     }
 
 
     public function excluir($id)
     {
-        $parametro = [
-            ":id"   => $id
-        ];
+        $user = $this->database->query("SELECT id_usuario FROM RECEITA WHERE id_receita=:id", [":id" => $id]);
 
-        $this->database->exe_query("DELETE FROM RECEITA WHERE id_receita=:id", $parametro);
-        header('Location: ' . PROTOCOLO . '://' . PATH . '/receita');
+        if (isset($_SESSION['user']) && $user[0]['id_usuario'] == $_SESSION['user']) {
+            $parametro = [
+                ":id"   => $id
+            ];
+
+            $this->database->exe_query("DELETE FROM RECEITA WHERE id_receita=:id", $parametro);
+            header('Location: ' . PROTOCOLO . '://' . PATH . '/receita');
+        } else {
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+        }
     }
 }

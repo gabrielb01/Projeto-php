@@ -1,15 +1,4 @@
-<?php if (isset($_SESSION["ERROR_DATA_OUT"])) : ?>
 
-    <div class="alert alert-dark" role="alert">
-        <?php echo $_SESSION["ERROR_DATA_OUT"]; ?>
-
-    </div>
-
-<?php
-
-    unset($_SESSION["ERROR_DATA_OUT"]);
-endif;
-?>
 <br>
 <br>
 <br>
@@ -38,11 +27,10 @@ endif;
                     <h3>Categoria</h3>
                     <select name="categoria" class="form-control">
                         <?php
-                        $database = ReceitaController::getConnect();
-                        $categorias = $database->query("SELECT * FROM CATEGORIA");
+                        $categorias = $this->database->query("SELECT * FROM CATEGORIA");
 
                         if (count($categorias) ==0){
-                            $_SESSION['ERROR_CATEGORIA_OUT'] ="É necessário que pelo menos uma categoria seja criada";
+                            $_SESSION['ERROR_DATA_OUT'] ="É necessário que pelo menos uma categoria seja criada";
                             header("Location:".PROTOCOLO."://".PATH."/categoria/new");
                          }
 

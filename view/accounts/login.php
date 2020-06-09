@@ -1,41 +1,3 @@
-<?php if (isset($_SESSION["CADASTRO_SUCESSO"])) : ?>
-    <div class="alert alert-dark" role="alert">
-        <?php echo $_SESSION["CADASTRO_SUCESSO"]; ?>
-    </div>
-
-
-<?php
-
-    unset($_SESSION["CADASTRO_SUCESSO"]);
-
-endif; ?>
-
-
-<?php if (isset($_SESSION["ERROR_DATA_OUT"])) : ?>
-
-    <div class="alert alert-dark" role="alert">
-        <?php echo $_SESSION["ERROR_DATA_OUT"]; ?>
-
-    </div>
-
-<?php
-
-    unset($_SESSION["ERROR_DATA_OUT"]);
-
-endif; ?>
-
-<?php if (isset($_SESSION["ERROR_DATA_LOGIN"])) : ?>
-
-    <div class="alert alert-dark" role="alert">
-        <?php echo $_SESSION["ERROR_DATA_LOGIN"]; ?>
-
-    </div>
-
-<?php
-
-    unset($_SESSION["ERROR_DATA_LOGIN"]);
-
-endif; ?>
 <div class="container-fluid">
     <div class="center">
         <div class="col-sm-3 col-xs-3">
@@ -55,7 +17,6 @@ endif; ?>
                     <button class="btn btn-primary btn-lg">Entrar</button>
                 </div>
                 <a href="cadastro">Cadastrar Grátis</a>
-
             </form>
         </div>
     </div>

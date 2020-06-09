@@ -1,32 +1,5 @@
-<?php if (isset($_SESSION["ERROR_DATA_OUT"])) : ?>
-
-    <div class="alert alert-dark" role="alert">
-        <?php echo $_SESSION["ERROR_DATA_OUT"]; ?>
-
-    </div>
-
-<?php
-
-    unset($_SESSION["ERROR_DATA_OUT"]);
-
-endif;
-?>
-
-<?php if (isset($_SESSION["ERROR_CATEGORIA_OUT"])) : ?>
-
-<div class="alert alert-dark" role="alert">
-    <?php echo $_SESSION["ERROR_CATEGORIA_OUT"]; ?>
-
-</div>
-
-<?php
-
-unset($_SESSION["ERROR_CATEGORIA_OUT"]);
-endif;
-?>
 <br><br>
 <div class="container">
-
     <div class="col-md-8 offset-md-2 col-sm-12 col-12">
         <div class="categoria-content">
             <form action="<?= PROTOCOLO ?>://<?= PATH ?>/categoria/validarnovacategoria" method="post" class="form-add-categoria">
