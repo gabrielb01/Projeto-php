@@ -1,3 +1,9 @@
+<?php
+
+    if (!defined('INDEX')) {
+      die("Erro no sistema!");
+    }
+?>
 <?php foreach ($this->receitas as $receita) :
 ?>
     <div class="col-md-3 col-sm-4 col-12">

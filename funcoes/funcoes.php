@@ -1,5 +1,10 @@
 <?php
 
+
+if (!defined('INDEX')) {
+  die("Erro no sistema!");
+}
+
 function limpar($arg)
 {
     return htmlentities($arg,ENT_QUOTES,"UTF-8");
@@ -7,7 +12,6 @@ function limpar($arg)
 
 function alert()
 {
-    echo "<br /><br />";
 
     if (isset($_SESSION["ERROR_DATA_PASSWORD"])) {
         echo "<div class='mtop'><div class='alert alert-dark' role='alert >";
@@ -28,6 +32,7 @@ function alert()
         unset($_SESSION["CADASTRO_SUCESSO"]);
     }
 }
+
 
 ?>
 

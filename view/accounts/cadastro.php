@@ -1,3 +1,9 @@
+<?php
+
+    if (!defined('INDEX')) {
+      die("Erro no sistema!");
+    }
+?>
 <div class="container-fluid">
     <div class="center">
         <div class="col-sm-3 col-xs-3">

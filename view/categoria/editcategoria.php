@@ -1,3 +1,9 @@
+<?php
+
+    if (!defined('INDEX')) {
+      die("Erro no sistema!");
+    }
+?>
 <div class="container">
     <div class="categoria-content">
         <div class="col-md-8 offset-md-2 col-sm-12 col-12">

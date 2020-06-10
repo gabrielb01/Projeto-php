@@ -1,14 +1,16 @@
 <?php
 
+if (!defined('INDEX')) {
+  die("Erro no sistema!");
+}
+
 class View
 {
     private $fileName;
     public static $title;
     public static $style;
-
+  
     
-
-
 
     public function __construct($fileName)
     {

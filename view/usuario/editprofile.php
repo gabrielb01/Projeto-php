@@ -1,3 +1,9 @@
+<?php
+
+    if (!defined('INDEX')) {
+      die("Erro no sistema!");
+    }
+?>
 <div class="container-flex">
     <div class="container-flex-left">
         <div class="container-nav">
@@ -89,11 +95,11 @@
 
 
             <?php if ($this->acao == "excluir-conta") : ?>
-                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/editarDadosUsuario" class="form-edit-profile" method="post">
+                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" class="form-edit-profile" method="post">
                     <h2>Você quer excluir Sua Conta?</h2> <br>
                     <input type="hidden" name="form" value="excluir">
                     <button class="btn btn-success btn-lg">Sim</button>
-                    <a class="btn btn-primary btn-lg" href="<?= PROTOCOLO ?>://<?= PATH ?>/usuario/profile/<?= $_SESSION['usuario'] ?>">Não</a>
+                    <a class="btn btn-primary btn-lg" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/profile/<?= $_SESSION['usuario'] ?>">Não</a>
                 </form>
             <?php endif; ?>
 

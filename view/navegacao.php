@@ -3,9 +3,12 @@
 if (isset($_SESSION['permissao'])) {
   $permissão = explode(";", $_SESSION['permissao']);
 }
+if (!defined('INDEX')) {
+  die("Erro no sistema!");
+}
 ?>
 
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-gradient-success">
+<nav class="navbar navbar-expand-lg navbar-light">
   <div class="container">
     <a href="<?= PROTOCOLO ?>://<?= PATH ?>/" class="navbar-brand h1 mb-0"> Conscious Vegan</a>
 

@@ -1,5 +1,11 @@
 <?php
 // classe usuário
+
+
+if (!defined('INDEX')) {
+  die("Erro no sistema!");
+}
+
 class UController
 {
 
@@ -18,15 +24,14 @@ class UController
     }
 
    
-    public function profile()
+    public function profile($usuario)
     {
-
-
-        $dados = $this->database->query("SELECT * FROM USUARIO WHERE id_usuario = :id", [":id" => $_SESSION['user']]);
+        $dados = $this->database->query("SELECT * FROM USUARIO WHERE usuario = :usuario", [":usuario" => $usuario]);
 
         $this->title = $_SESSION['nome_full'];
         $this->view = new View("usuario/profile");
         $this->view->dados = $dados;
+        $this->view->usuario = $usuario;
         $this->view->render($this->title,$this->style);
     }
 
@@ -233,13 +238,16 @@ class UController
                         ":id" => $_SESSION['user']
                     ];
                     $this->database->exe_query("DELETE FROM USUARIO WHERE id_usuario=:id", $parametro);
+                    $this->database->exe_query("DELETE FROM RECEITA WHERE id_usuario=:id",$parametro);
                     $_SESSION["CADASTRO_SUCESSO"] = "Sua conta foi excluída!";
                     unset($_SESSION['user']);
                     unset($_SESSION['usuario']);
                     unset($_SESSION['nome_full']);
+                    unset($_SESSION['permissao']);
                     header('Location:' . PROTOCOLO . '://' . PATH . '');
                 } else {
-                    header("Location:" . PROTOCOLO . "://" . PATH . "/error");   
+                    header("Location:" . PROTOCOLO . "://" . PATH . "/error");  
+                    echo "OK"; 
                 }
             }
         } else {

@@ -1,15 +1,25 @@
+<?php
+
+    if (!defined('INDEX')) {
+      die("Erro no sistema!");
+    }
+?>
+<?php if($_SESSION['user'] == $this->id):?>
 <br><br>
 <div class="container">
     <div class="row">
         <a href="<?= PROTOCOLO ?>://<?= PATH ?>/receita/new" class="btn btn-primary btn-lg">Cadastrar Receita</a>
     </div>
 </div>
-
+<?php endif; ?>
 <br><br>
 
 <div class="container">
     <div class="row">
         <?php
+        if(count($this->receitas)==0) {
+            echo "<h2>Não há nenhuma receita cadastrada!</h2>";
+        } else {
         foreach ($this->receitas as $receita) :
         ?>
             <div class="col-md-3 col-sm-4 col-12">
@@ -22,6 +32,6 @@
                     </div>
                 </div>
             </div>
-        <?php endforeach; ?>
+        <?php endforeach; }?>
     </div>
 </div>

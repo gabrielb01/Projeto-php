@@ -1,5 +1,10 @@
 <!-- Listar todas as receitas salvas pelo usuário. -->
+<?php
 
+    if (!defined('INDEX')) {
+      die("Erro no sistema!");
+    }
+?>
 <div class="container">
     <div class="row">
         <?php

@@ -1,5 +1,11 @@
 <?php
 
+
+if (!defined('INDEX')) {
+  die("Erro no sistema!");
+}
+
+
 class CategoriaController
 {
 
@@ -67,6 +73,8 @@ class CategoriaController
         if (count($receitas) == 0) {
             header("Location:" . PROTOCOLO . "://" . PATH . "/error");
         }
+
+        $this->title = $name;
 
         $this->view = new View("categoria/showcategoria");
         $this->view->receitas = $receitas;
@@ -148,12 +156,20 @@ class CategoriaController
     {
 
         if (isset($_SESSION['user']) && isset($_SESSION['permissao']) && $_SESSION['permissao'] == "user;admin") {
-            $parametro = [
-                ":id"   => $id
-            ];
-
-            $this->database->exe_query("DELETE FROM CATEGORIA WHERE id_categoria=:id", $parametro);
-            header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
+            $categoria = $this->database->query("SELECT nome_categoria FROM CATEGORIA WHERE id_categoria=:id",[":id" => $id]);
+            $resultado = $this->database->query("SELECT titulo FROM RECEITA WHERE categoria=:categoria",[':categoria' =>$categoria[0]['nome_categoria']]);
+            if (count($resultado)==0) {
+                $parametro = [
+                    ":id"   => $id
+                ];
+    
+                $this->database->exe_query("DELETE FROM CATEGORIA WHERE id_categoria=:id", $parametro);
+                header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
+            } else {
+                $_SESSION['ERROR_DATA_OUT'] ="Você não pode excluir uma categoria com receitas cadastradas!";
+                header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
+                
+            }
         } else {
             header("Location:" . PROTOCOLO . "://" . PATH . "/error");
         }

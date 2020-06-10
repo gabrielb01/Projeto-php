@@ -1,8 +1,10 @@
 <?php
 
-require_once "../config.php";
+if (isset($_SESSION['user'])) {
 
-require_once "../model/database.php";
+    require_once "../config.php";
+
+require_once "../model/Database.php";
 
 
 
@@ -49,4 +51,6 @@ if ($_POST['type'] == "remove") {
 
        echo "Receita removida da sua lista de receita com sucesso!";
     }
+}
+
 }

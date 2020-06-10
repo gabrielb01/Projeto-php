@@ -1,6 +1,10 @@
 <?php
 
 
+if (!defined('INDEX')) {
+  die("Erro no sistema!");
+}
+
 Class Bootstrap
 {
 
@@ -18,7 +22,7 @@ Class Bootstrap
             if (file_exists("./controller/" . $url[0]. "Controller.php")) {
                 $controller = $url[0]."Controller";
                 $controller = new $controller();
-                $controller->title =ucfirst($url[0]);
+                $controller->title =$url[0];
                 $controller->style = $url[0];
                 if(!isset($url[1])) {
                     $controller->index();

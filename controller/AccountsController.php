@@ -1,6 +1,11 @@
 <?php
 
 
+if (!defined('INDEX')) {
+  die("Erro no sistema!");
+}
+
+
 Class AccountsController
 {
 
@@ -24,12 +29,14 @@ Class AccountsController
 
     public function login()
     {
+        $this->title = "Login";
         $this->view = new View("accounts/login");
         $this->view->render($this->title,$this->style);
     }
 
     public function cadastro()
     {
+        $this->title ="Cadastro";
         $this->view = new View("accounts/cadastro");
         $this->view->render($this->title,$this->style);
     }

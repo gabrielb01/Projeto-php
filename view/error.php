@@ -1,4 +1,9 @@
+<?php
 
+    if (!defined('INDEX')) {
+      die("Erro no sistema!");
+    }
+?>
 <div class="error-content">
     <h1>Página não encontrada!</h1>
     <h3>Erro 404.</h3>

@@ -1,18 +1,9 @@
-
-<?php if (isset($_SESSION["EDIT_SUCCESS"])) : ?>
-
-  <div class="alert alert-primary" role="alert">
-    <?php echo $_SESSION["EDIT_SUCCESS"]; ?>
-  </div>
-
 <?php
 
-  unset($_SESSION["EDIT_SUCCESS"]);
-
-endif; ?>
-
-
-
+    if (!defined('INDEX')) {
+      die("Erro no sistema!");
+    }
+?>
 <div class="container">
   <div class="row justify-content-center">
     <div class="row mb-5 ">

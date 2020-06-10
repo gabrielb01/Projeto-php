@@ -13,16 +13,10 @@ spl_autoload_register(function($className) {
 
 $url = (isset($_GET['url']) ? $_GET['url'] : "");
 
-
+define("INDEX",true);
 
 if ($url!=""){
     $url = explode("/",$url);
-}
-
-if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ) {
-    define("PROTOCOLO","https");
-} else {
-    define("PROTOCOLO","http");
 }
 
 

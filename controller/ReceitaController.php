@@ -1,5 +1,10 @@
 <?php
 
+
+if (!defined('INDEX')) {
+  die("Erro no sistema!");
+}
+
 class ReceitaController
 {
 
@@ -30,14 +35,15 @@ class ReceitaController
         $this->view->render($this->title,$this->style);
     }
 
-    public function detalhes()
+    public function detalhes($id)
     {
         //Mostrar apenas as receitas adicionadas pelo o usuário
 
-        $receitas = $this->database->query("SELECT * FROM RECEITA WHERE id_usuario=:id ORDER BY criando_em DESC", [':id' => $_SESSION['user']]);
+        $receitas = $this->database->query("SELECT * FROM RECEITA WHERE id_usuario=:id ORDER BY criando_em DESC", [':id' => $id]);
 
         $this->view = new View("receita/receitas");
         $this->view->receitas = $receitas;
+        $this->view->id = $id;
         $this->view->render($this->title,$this->style);
     }
 
@@ -59,6 +65,8 @@ class ReceitaController
         if (count($receita)==0) { 
             header("Location:".PROTOCOLO."://".PATH."/error");
         }
+
+        $this->title = $receita[0]['titulo'];
         
         $criador = $this->database->query("SELECT usuario,nome,sobrenome FROM USUARIO WHERE id_usuario=:id", [":id" => $receita[0]['id_usuario']]);
 
@@ -79,7 +87,7 @@ class ReceitaController
     }
 
 
-    function edit($id)
+    public function edit($id)
     {
 
         $receita = $this->database->query("SELECT * FROM RECEITA WHERE id_receita=:id", [":id" => $id]);
@@ -108,12 +116,13 @@ class ReceitaController
             $this->view->receitas = $receitas;
             $this->view->render($this->title,$this->style);
         } else {
-
-            echo "<h2>Nenhum resultado encontrado!</h2>";
+            $this->view = new View("receita/notfoundreceita");
+            $this->view->render($this->title,$this->style);
+            
         }
 
 
-        require_once "view/footer.php";
+        
     }
 
 
@@ -163,7 +172,7 @@ class ReceitaController
 
 
                             $_SESSION["CADASTRO_SUCESSO"] = "Receita adicionada com sucesso!";
-                            header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/detalhes');
+                            header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/detalhes/'.$_SESSION['user']);
                         } else {
                             $_SESSION["ERROR_DATA_OUT"] = "Erro ao tentar enviar a imagem, tente novamente!";
                             header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
