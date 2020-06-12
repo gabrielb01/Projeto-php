@@ -49,8 +49,13 @@
     align-items: center;
 }
 
-.nav-box a, .subnav a {
+.nav-box, .subnav a {
     color: #fff;
+}
+
+.nav-box:hover, .subnav a:hover {
+    color: #fff;
+    text-decoration: none;
 }
 
 

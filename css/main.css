@@ -1,5 +1,6 @@
 body {
     padding:0;
+    padding-top: 70px;
     margin:0;
     overflow-x: hidden;
     background-color: #f7f8fa;
@@ -9,6 +10,8 @@ textarea {
     resize: none;
 }
 
+
+
 .alert {
     padding: 20px 0px 10px 10px;
     text-align: center;
@@ -17,6 +20,10 @@ textarea {
 
 .navbar {
     background-color: #2cb62c;
+}
+
+.navbar a {
+    color: #fff !important;
 }
 
 .flex-container {

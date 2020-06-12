@@ -10,8 +10,7 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ) {
 
 define('HOST_EMAIL', 'smtp.gmail.com');
 define('EMAIL',"contato.escolavirtualdecursos@gmail.com");
-define('PASSWORD_EMAIL',"090295thetime1");
-define('NAME_HOST', 'Conscious Vegan');
+
 
 define('HOST', 'localhost');
 define('USER', 'root');

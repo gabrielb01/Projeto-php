@@ -1,12 +1,13 @@
 <?php
 
-    if (!defined('INDEX')) {
-      die("Erro no sistema!");
-    }
+if (!defined('INDEX')) {
+    die("Erro no sistema!");
+}
 ?>
+<br><br>
 <div class="container">
-    <div class="categoria-content">
-        <div class="col-md-8 offset-md-2 col-sm-12 col-12">
+    <div class="col-md-8 offset-md-2 col-sm-12 col-12">
+        <div class="categoria-content">
             <form action="<?= PROTOCOLO ?>://<?= PATH ?>/categoria/validaredit/<?= $this->id ?>" method="post" class="form-add-categoria">
                 <div class="form-group">
                     <h3>Nome da Categora</h3>
