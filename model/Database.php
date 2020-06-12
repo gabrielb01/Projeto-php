@@ -1,9 +1,5 @@
 <?php 
 
-if (!defined('INDEX')) {
-  die("Erro no sistema!");
-}
-
 class Database 
 {
     

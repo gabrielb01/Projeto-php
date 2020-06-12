@@ -5,11 +5,8 @@
     }
 ?>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
+
 <div class="container">
     <div class="col-md-8 offset-md-2 col-sm-12 col-12">
         <div class="receita-content">
@@ -62,3 +59,4 @@
         </div>
     </div>
 </div>
+<br><br>

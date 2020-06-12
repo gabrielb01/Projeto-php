@@ -17,8 +17,6 @@ $(document).ready(function() {
     });
 
 
-
-
     $('#email').blur(function() {
         let url = `${PROTOCOLO}://${PATH}/api/verificarusuario.php`;
         let data = { data: $('#email').val(), tipo: "email" };
@@ -105,6 +103,7 @@ $(document).ready(function() {
 
 
 });
+
 
 function lines() {
     let lines = $('#text-ingredientes').val().split(/\n/);

@@ -20,17 +20,20 @@ $pdo = new pdo('mysql:host=' . HOST . ';dbname=' . DBNAME, USER, PASS);
 $pdo->query("ALTER DATABASE ".DBNAME." CHARSET = Latin1 COLLATE = latin1_swedish_ci");
 
 $pdo->query("CREATE TABLE USUARIO(
-    id_usuario          int auto_increment PRIMARY KEY not null,
-    usuario             varchar(255),     
-    email               varchar(255),
-    permissao           varchar(255),
-    senha               varchar(255),
-    nome                varchar(255),
-    sobrenome           varchar(255),
-    receitas_salvas     text DEFAULT '',
-    sexo                char(1),
-    ativo               boolean,
-    foto_perfil         varchar(255));");
+    id_usuario              int auto_increment PRIMARY KEY not null,
+    usuario                 varchar(255),     
+    email                   varchar(255),
+    permissao               varchar(255),
+    senha                   varchar(255),
+    nome                    varchar(255),
+    sobrenome               varchar(255),
+    receitas_salvas         text DEFAULT '',
+    sexo                    char(1),
+    ativo                   boolean DEFAULT 0,
+    token                   varchar(255),
+    token_ativo             char(1) DEFAULT 0,
+    token_ativo_password    char(1) DEFAULT 0,
+    foto_perfil             varchar(255));");
 
 
 $pdo->query("CREATE TABLE RECEITA(
@@ -57,7 +60,7 @@ $pdo->query("CREATE TABLE CATEGORIA(
 
 $foto = '/img/default/default.png';
 
-$pdo->query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,foto_perfil) VALUES ('gabriel','gabriel@teste.com','user;admin','$2y$10$4OS8oPpNIuG/s9N0lqT2MeIBH3DLNQZEoPN8zqEpA/7BrMpNEGqpK','Gabriel','Alves','M','".$foto."')");
+$pdo->query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,ativo,foto_perfil) VALUES ('gabriel','gabriel@teste.com','user;admin','$2y$10$4OS8oPpNIuG/s9N0lqT2MeIBH3DLNQZEoPN8zqEpA/7BrMpNEGqpK','Gabriel','Alves','M','1','".$foto."')");
 
 
 echo "Tudo Feito!";

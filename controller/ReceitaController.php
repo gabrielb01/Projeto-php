@@ -20,6 +20,13 @@ class ReceitaController
         if (!isset($_SESSION['user'])) {
             header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
         }
+
+
+        $user = $this->database->query("SELECT ativo FROM USUARIO WHERE id_usuario=:id",[':id' => $_SESSION['user']]);
+        if ($user[0]['ativo'] =="0") {
+            $_SESSION["ERROR_DATA_OUT"] = "Para você pode usar sua conta, primeiro é preciso verificar seu e-mail";
+            header('Location:' . PROTOCOLO . '://' . PATH . '/');
+        }
     }
 
     

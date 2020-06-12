@@ -5,6 +5,10 @@ body {
     background-color: #f7f8fa;
 }
 
+textarea {
+    resize: none;
+}
+
 .alert {
     padding: 20px 0px 10px 10px;
     text-align: center;
@@ -15,3 +19,9 @@ body {
     background-color: #2cb62c;
 }
 
+.flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90vh !important;
+}

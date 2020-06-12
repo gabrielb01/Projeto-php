@@ -8,7 +8,7 @@
     <div class="container-flex-left">
         <div class="container-nav">
             <div class="list-group">
-                <a href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-perfil" class="list-group-item list-group-item-action <?= $acao == "editar-perfil" ? "active" : "" ?>">Editar Perfil</a>
+                <a class="list-group-item list-group-item-action <?= $this->acao == "editar-perfil" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-perfil">Editar Perfil</a>
                 <a class="list-group-item list-group-item-action <?= $this->acao == "editar-usuario" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-usuario">Editar Usuario</a>
                 <a class="list-group-item list-group-item-action <?= $this->acao == "editar-email" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-email">Editar Email</a>
                 <a class="list-group-item list-group-item-action <?= $this->acao == "editar-senha" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-senha">Editar Senha</a>

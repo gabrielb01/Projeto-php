@@ -37,22 +37,29 @@
     margin-left: 50px;
 }
 
-.nav-flex {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 400px;
-}
 
 .nav-box {
     background-color: green;
-    padding: 100px;
-    margin: 20px;
     color: #fff;
     font-family: tahoma;
+    font-size: 26px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-box a, .subnav a {
+    color: #fff;
 }
 
 
+.subnav {
+    background-color: #2cb62c;
+    border-bottom: 3px solid #00ff00;
+    width: 100%;
+    padding: 10px 5px;
+}
 
 
  /* usuario editar */

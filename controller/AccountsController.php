@@ -41,6 +41,76 @@ Class AccountsController
         $this->view->render($this->title,$this->style);
     }
 
+    public function verificar($token)
+    {
+        $resultado = $this->database->query("SELECT * FROM USUARIO WHERE token=:token AND token_ativo=:ativo",[':token' => $token, ':ativo' => "1"]);
+
+        if (count($resultado)==0) {
+            header('Location: ' .PROTOCOLO. '://'.PATH.'/error');
+            exit;
+        }
+
+        if ($resultado[0]['token_ativo'] =="1") {
+            $parametro = [
+                ":ativo"  => "1",
+                "token_ativo" => "0",
+                "token" => $token
+            ];
+            $this->database->exe_query("UPDATE USUARIO SET ativo=:ativo,token_ativo=:token_ativo WHERE token=:token",$parametro);
+
+            $_SESSION['CADASTRO_SUCESSO'] = "Conta verificada com sucesso!";
+
+            $_SESSION['user'] =$resultado[0]['id_usuario'];
+            $_SESSION['usuario'] = $resultado[0]['usuario'];
+            $_SESSION['nome_full'] = $resultado[0]['nome'] . " ". $resultado[0]['sobrenome'];
+            $_SESSION['permissao'] = $resultado[0]['permissao'];
+
+            header('Location: ' .PROTOCOLO. '://'.PATH.'/u/profile/'.$resultado[0]['usuario']);
+                       
+
+        } else {
+            $_SESSION["ERROR_DATA_OUT"] = "Esse token não é mais válido";
+            header('Location: ' .PROTOCOLO. '://'.PATH.'/');
+        }
+
+   
+
+    }
+
+    public function reset($token)
+    {
+        $resultado = $this->database->query("SELECT * FROM USUARIO WHERE token=:token AND token_ativo_password=:ativo",[':token' => $token, ':ativo' => "1"]);
+        if (count($resultado)==0) {
+            header('Location: ' .PROTOCOLO. '://'.PATH.'/error');
+            exit;
+        }
+
+        if ($resultado[0]['token_ativo_password'] =="1") {
+            $parametro = [
+                "token_ativo_password" => "0",
+                "token" => $token
+            ];
+            $this->database->exe_query("UPDATE USUARIO SET token_ativo_password=:token_ativo_password WHERE token=:token",$parametro);
+
+            header('Location: ' .PROTOCOLO. '://'.PATH.'/accounts/newpassword');
+                       
+
+        } else {
+            $_SESSION["ERROR_DATA_OUT"] = "Esse token não é mais válido";
+            header('Location: ' .PROTOCOLO. '://'.PATH.'/');
+        }
+
+    }
+
+    public function newpassword()
+    {
+        $this->title = "Nova senha - Conscious Vegan";
+        $this->view = new View("accounts/newpassword");
+        $this->view->render($this->title,$this->style);
+    }
+
+
+
     public function validarCadastro() 
     {
 
@@ -65,6 +135,7 @@ Class AccountsController
                     } else {
                         if (isset($_POST['radio'])) {
                             $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT );
+                            $token = md5($email);
                             $parametro = [
                                 ":usuario" => $usuario,
                                 ":email" => $email,
@@ -73,11 +144,27 @@ Class AccountsController
                                 ":nome" => $nome,
                                 ":sobrenome" => $sobrenome,
                                 ":sexo" => $_POST['radio'],
+                                ":token" => $token,
+                                ":token_ativo" => "1",
                                 ":foto_perfil" =>'/img/default/default.png'
                             ];
         
-                            $this->database->exe_query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,foto_perfil) VALUES(:usuario,:email,:permissao,:senha,:nome,:sobrenome,:sexo, :foto_perfil)", $parametro);
-                            $_SESSION["CADASTRO_SUCESSO"] = "Cadastro feito com sucesso, faça o login!";
+                            $this->database->exe_query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,token,token_ativo,foto_perfil) 
+                            VALUES(:usuario,:email,:permissao,:senha,:nome,:sobrenome,:sexo,:token,:token_ativo, :foto_perfil)", $parametro);
+                            $_SESSION["CADASTRO_SUCESSO"] = "Cadastro feito com sucesso, verifique seu e-mail para fazer a confirmação da conta!";
+
+                            $texto_email = "<h4>Parabéns, você acabou de criar sua conta no Conscious Vegan <b>= )</b>.</h4>
+                                            <p>Primeiramente, vamos confirmar sua conta de E-mail.</p>
+                                            <p>Então, para isso clique no link abaixo.</p>
+                                            <p><a href='".PROTOCOLO."://".PATH."/accounts/verificar/".$token."'>confirmar conta.</a></p>";
+
+
+                            $mail = new Email(HOST_EMAIL,EMAIL,PASSWORD_EMAIL,NAME_HOST);
+			                $mail->addAdress($email,$nome . ' '. $sobrenome);
+			                $mail->formatarEmail("Conta criada com sucesso",$texto_email);
+			                $mail->enviarEmail();
+
+
                             header('Location: ' .PROTOCOLO. '://'.PATH.'/accounts/login');
                         } else {
                             $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
@@ -147,7 +234,8 @@ Class AccountsController
             unset($_SESSION['user']);
             unset($_SESSION['usuario']);
             unset($_SESSION['nome_full']);
-            unset($_SESSION['permissao']);  
+            unset($_SESSION['permissao']); 
+            unset($_SESSION['ativo']);  
             header('Location:' .PROTOCOLO. '://'.PATH.'');
        } else {
          header("Location:".PROTOCOLO."://".PATH."/error");
