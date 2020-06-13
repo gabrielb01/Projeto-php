@@ -22,7 +22,8 @@
                 <div class="form-group">
                     <button class="btn btn-primary btn-lg">Entrar</button>
                 </div>
-                <a href="cadastro">Cadastrar Grátis</a>
+                <a href="<?=PROTOCOLO?>://<?=PATH?>/accounts/cadastro">Cadastrar Grátis</a> <br>
+                <a href="<?=PROTOCOLO?>://<?=PATH?>/accounts/forgot">Esqueceu a senha?</a>
             </form>
         </div>
     </div>

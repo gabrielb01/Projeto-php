@@ -33,7 +33,39 @@ $(document).ready(function() {
         },2000);
     });
 
+    $("#email-forgot").keyup(function() {
+        if ($(this).val()!="") {
+            let exp_email = /^[a-zA-Z0-9][a-zA-Z0-9\._-]+@([a-zA-Z0-9\._-]+\.)[a-zA-Z-0-9]{2,3}/;
+            if (exp_email.test($(this).val())) {
+                $("#btn-forgot").removeAttr('disabled');
+            } else {
+                $("#btn-forgot").attr('disabled','disabled');
+            }
+        } else {
+            $("#btn-forgot").attr('disabled','disabled');
+        }
+    }); 
 
+    $("#pass1").keyup(function() {
+        validarCampo();
+    });
+    $("#pass2").keyup(function() {
+        validarCampo();
+    });
+    
+
+    function validarCampo() {
+        if($("#pass1").val().length >=8 && $("#pass2").val().length >= 8) {
+            if($("#pass1").val() == $("#pass2").val()) {
+                $("#btn-new-password").removeAttr('disabled');
+            } else {
+                $("#btn-new-password").attr('disabled','disabled');
+            }
+        } else {
+            $("#btn-new-password").attr('disabled','disabled');
+        }
+
+    }
 
     
 
@@ -116,9 +148,6 @@ function lines() {
 
     $("#listasFull").val(contentLines);
 }
-
-
-
 
 
 

@@ -13,8 +13,8 @@ textarea {
 
 
 .alert {
-    padding: 20px 0px 10px 10px;
     text-align: center;
+    margin-top: -15px;
 }
 
 
@@ -31,4 +31,5 @@ textarea {
     align-items: center;
     justify-content: center;
     height: 90vh !important;
+    width: 100vw !important;
 }

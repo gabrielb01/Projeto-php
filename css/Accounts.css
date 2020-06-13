@@ -16,3 +16,10 @@
     width: 600px;
     margin-left: 110%;
 }
+
+
+.bg-white {
+    background-color: #fff;
+    padding: 30px 20px;
+    border-radius: 7px;
+}
