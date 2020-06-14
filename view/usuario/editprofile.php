@@ -20,7 +20,7 @@
     <div class="container-flex-right">
         <div class="container-main">
             <?php if ($this->acao == "editar-perfil") : ?>
-                <form class="form-edit-profile" action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" method="post">
+                <form class="form-edit-profile form" action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" method="post">
                     <div class="form-group">
                         <h2>Nome</h2>
                         <input type="text" name="nome" class="form-control" value="<?= $this->dados[0]['nome'] ?>" required>
@@ -31,13 +31,13 @@
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="form" value="formFullName">
-                        <button class="btn btn-primary btn-lg">Salvar</button>
+                        <input type="submit" class="btn btn-primary btn-lg btn-submit" value="Salvar" />
                     </div>
                     <?php alert(); ?>
                 </form>
             <?php endif; ?>
             <?php if ($this->acao == "editar-usuario") : ?>
-                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" method="post" class="form-edit-profile">
+                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" method="post" class="form-edit-profile form">
                     <div class="form-group">
                         <h2>Usuario</h2>
                         <input type="text" name="usuario" class="form-control" value="<?= $this->dados[0]['usuario'] ?>" required>
@@ -45,21 +45,21 @@
 
                     <div class="form-group">
                         <input type="hidden" name="form" value="usuario_c">
-                        <button class="btn btn-primary btn-lg">Salvar</button>
+                        <input type="submit" class="btn btn-primary btn-lg btn-submit" value="Salvar" />
                     </div>
                 </form>
                 <?php alert(); ?>
 
             <?php endif; ?>
             <?php if ($this->acao == "editar-email") : ?>
-                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" class="form-edit-profile" method="post">
+                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" class="form-edit-profile form" method="post">
                     <div class="form-group">
                         <h2>Email</h2>
                         <input type="text" name="email" class="form-control" value="<?= $this->dados[0]['email'] ?>" required>
                     </div>
                     <div class="form-group">
                         <input type="hidden" name="form" value="email_c">
-                        <button class="btn btn-primary btn-lg">Salvar</button>
+                        <input type="submit" class="btn btn-primary btn-lg btn-submit" value="Salvar" />
                     </div>
                 </form>
             <?php endif; ?>
@@ -68,7 +68,7 @@
 
 
             <?php if ($this->acao == "editar-senha") : ?>
-                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" class="form-edit-profile" method="post">
+                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" class="form-edit-profile form" method="post">
                     <div class="form-group">
                         <h2>Sua Senha</h2>
                         <input type="password" name="senha_original" class="form-control"required>
@@ -84,21 +84,18 @@
 
                     <div class="form-group">
                         <input type="hidden" name="form" value="senha_c">
-                        <button class="btn btn-primary btn-lg">Salvar</button>
+                        <input type="submit" class="btn btn-primary btn-lg btn-submit" value="Salvar" />
                     </div>
                 </form>
 
 
             <?php endif; ?>
 
-            <?php alert(); ?>
-
-
             <?php if ($this->acao == "excluir-conta") : ?>
-                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" class="form-edit-profile" method="post">
+                <form action="<?= PROTOCOLO ?>://<?= PATH ?>/u/editarDadosUsuario" class="form-edit-profile form" method="post">
                     <h2>Você quer excluir Sua Conta?</h2> <br>
                     <input type="hidden" name="form" value="excluir">
-                    <button class="btn btn-success btn-lg">Sim</button>
+                    <input type="submit" class="btn btn-danger btn-lg btn-submit" value="Sim" />
                     <a class="btn btn-primary btn-lg" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/profile/<?= $_SESSION['usuario'] ?>">Não</a>
                 </form>
             <?php endif; ?>

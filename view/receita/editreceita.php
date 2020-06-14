@@ -8,7 +8,7 @@
 <div class="container">
     <div class="col-md-8 offset-md-2 col-sm-12 col-12">
         <div class="receita-content">
-            <form action="<?= PROTOCOLO ?>://<?= PATH ?>/receita/validareditreceita/<?=$this->receita[0]['id_receita']?>" method="post" id="formNewReceita" enctype="multipart/form-data" class="form-add-categoria">
+            <form action="<?= PROTOCOLO ?>://<?= PATH ?>/receita/validareditreceita/<?=$this->receita[0]['id_receita']?>" method="post" id="formNewReceita" enctype="multipart/form-data" class="form-add-categoria form">
                 <div class="form-group">
                     <h3>Nome da Receita</h3>
                     <input type="text" class="form-control" name="nomeReceita" autocomplete="off" required placeholder="Nome da Receita" value="<?= $this->receita[0]['titulo'] ?>">
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="submit" value="Salvar" class="btn btn-success">
+                    <input type="submit" value="Salvar" class="btn btn-success btn-submit">
                 </div>
             </form>
         </div>

@@ -18,6 +18,7 @@ class ReceitaController
         $this->database = new Database();
 
         if (!isset($_SESSION['user'])) {
+            $_SESSION['ERROR_DATA_OUT'] ="Faça o login para ver as receitas!";
             header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
         }
 
@@ -155,7 +156,7 @@ class ReceitaController
                 } else {
                     if (!in_array($tipo_image[1], $type_in)) {
                         $_SESSION["ERROR_DATA_OUT"] = "Escolha Imagem do tipo png ou jpg ";
-                        echheader('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
+                        header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
                     } else {
                         $img_receita = md5(strval(date("Y-m-d H:i:s")) . $_FILES['fotoReceita']['name']);
                         $destino = "img/receita/";

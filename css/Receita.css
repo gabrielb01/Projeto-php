@@ -1,9 +1,11 @@
-.receita-content {
+.single-receita-content, .receita-content {
     background-color: #fff ;
     box-shadow: 0 0 3px rgba(0, 0, 255, 0.714);
-    padding: 20px;
     border-radius: 7px;
+}
 
+.receita-content {
+    padding: 20px;
 }
 
 .single-receita-content img {

@@ -46,6 +46,10 @@ $(document).ready(function() {
         }
     }); 
 
+    $(".form").submit(function() {
+        $(".btn-submit").attr('disabled','disabled');
+    });
+
     $("#pass1").keyup(function() {
         validarCampo();
     });

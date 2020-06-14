@@ -48,32 +48,40 @@ class AccountsController
 
     public function gerartoken()
     {
-        $email = trim(limpar($_POST['email']));
-        $resultado = $this->database->query("SELECT id_usuario,nome,sobrenome FROM USUARIO WHERE email=:email", [':email' => $email]);
+        if ($_POST) {
+            $email = trim(limpar($_POST['email']));
+            $resultado = $this->database->query("SELECT id_usuario,nome,sobrenome FROM USUARIO WHERE email=:email", [':email' => $email]);
 
-        if (count($resultado) == 0) {
-            $_SESSION['ERROR_DATA_OUT'] = "Este e-mail não está cadastrado em nosso sistema.";
-            header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/forgot');
-        } else {
-            $token = md5($email . "Conscious Vegan - Redefinição de senha");
-            $parametro = [
-                ":token"    => $token,
-                ":token_ativo_password" => "1",
-                ":id"   => $resultado[0]['id_usuario']
-            ];
-            $this->database->exe_query("UPDATE USUARIO SET token=:token, token_ativo_password=:token_ativo_password WHERE id_usuario=:id", $parametro);
+            if (count($resultado) == 0) {
+                $_SESSION['ERROR_DATA_OUT'] = "Este e-mail não está cadastrado em nosso sistema.";
+                header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/forgot');
+            } else {
+                $token = md5($email . "Conscious Vegan - Redefinição de senha");
+                $parametro = [
+                    ":token"    => $token,
+                    ":token_ativo_password" => "1",
+                    ":id"   => $resultado[0]['id_usuario']
+                ];
+                $this->database->exe_query("UPDATE USUARIO SET token=:token, token_ativo_password=:token_ativo_password WHERE id_usuario=:id", $parametro);
 
-            $texto_email = "<p>Recentemente, você solicitou a redefinição da senha em sua conta Conscious Vegan.
+                $texto_email = "<p>Recentemente, você solicitou a redefinição da senha em sua conta Conscious Vegan.
              Por favor, use o link a seguir para criar uma nova senha.</p>
-            <p><a href='" . PROTOCOLO . "://" . PATH . "/accounts/reset/" . $token . "'>.".PROTOCOLO . "://" . PATH . "/accounts/reset/" . $token . "</a></p>";
+            <p><a href='" . PROTOCOLO . "://" . PATH . "/accounts/reset/" . $token . "'>." . PROTOCOLO . "://" . PATH . "/accounts/reset/" . $token . "</a></p>";
 
 
-            $mail = new Email(HOST_EMAIL, EMAIL, PASSWORD_EMAIL, NAME_HOST);
-            $mail->addAdress($email, $resultado[0]['nome'] . ' ' . $resultado[0]['sobrenome']);
-            $mail->formatarEmail("Conscious Vegan - Redefinição de senha", $texto_email);
-            $mail->enviarEmail();
-            $_SESSION['ERROR_DATA_OUT'] = "Um e-mail foi enviado para ".$email." com o link para redefinição da senha.";
-            header('Location: ' . PROTOCOLO . '://' . PATH . '/');
+                $mail = new Email(HOST_EMAIL, EMAIL, PASSWORD_EMAIL, NAME_HOST);
+                $mail->addAdress($email, $resultado[0]['nome'] . ' ' . $resultado[0]['sobrenome']);
+                $mail->formatarEmail("Conscious Vegan - Redefinição de senha", $texto_email);
+                if ($mail->enviarEmail()) {
+                    $_SESSION['CADASTRO_SUCESSO'] = "Um e-mail foi enviado para " . $email . " com o link para redefinição da senha.";
+                    header('Location: ' . PROTOCOLO . '://' . PATH . '/');
+                } else {
+                    $_SESSION['ERROR_DATA_OUT'] = "Erro ao tentar enviar o e-mail!";
+                    header('Location: ' . PROTOCOLO . '://' . PATH . '/');
+                }
+            }
+        } else {
+            header('Location: ' . PROTOCOLO . '://' . PATH . '/error');
         }
     }
 
@@ -126,35 +134,39 @@ class AccountsController
 
     public function editarsenha($token)
     {
-        if (isset($token)) {
-            $resultado = $this->database->query("SELECT * FROM USUARIO WHERE token=:token AND token_ativo_password=:ativo", [':token' => $token, ':ativo' => "1"]);
-            if ($resultado[0]['token_ativo_password'] == "1") {
+        if ($_POST) {
+            if (isset($token)) {
+                $resultado = $this->database->query("SELECT * FROM USUARIO WHERE token=:token AND token_ativo_password=:ativo", [':token' => $token, ':ativo' => "1"]);
+                if ($resultado[0]['token_ativo_password'] == "1") {
 
-                $novasenha = trim(limpar($_POST['pass1']));
-                $novasenha2 = trim(limpar($_POST['pass2']));
+                    $novasenha = trim(limpar($_POST['pass1']));
+                    $novasenha2 = trim(limpar($_POST['pass2']));
 
-                if ($novasenha == $novasenha2) {
-                    $parametro = [
-                        "token_ativo_password" => "0",
-                        "token" => $token
-                    ];
-                    $this->database->exe_query("UPDATE USUARIO SET token_ativo_password=:token_ativo_password,token='' WHERE token=:token", $parametro);
+                    if ($novasenha == $novasenha2) {
+                        $parametro = [
+                            "token_ativo_password" => "0",
+                            "token" => $token
+                        ];
+                        $this->database->exe_query("UPDATE USUARIO SET token_ativo_password=:token_ativo_password,token='' WHERE token=:token", $parametro);
 
-                    $hash = password_hash($novasenha, PASSWORD_DEFAULT);
+                        $hash = password_hash($novasenha, PASSWORD_DEFAULT);
 
-                    $parametro = [
-                        ":senha"    => $hash,
-                        ":id"       => $resultado[0]['id_usuario']
-                    ];
+                        $parametro = [
+                            ":senha"    => $hash,
+                            ":id"       => $resultado[0]['id_usuario']
+                        ];
 
-                    $this->database->exe_query("UPDATE USUARIO SET senha=:senha WHERE id_usuario=:id", $parametro);
-                    $_SESSION['CADASTRO_SUCESSO'] = "A nova senha foi salvar, faça o login para continuar";
-                    header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
+                        $this->database->exe_query("UPDATE USUARIO SET senha=:senha WHERE id_usuario=:id", $parametro);
+                        $_SESSION['CADASTRO_SUCESSO'] = "A nova senha foi salvar, faça o login para continuar";
+                        header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
+                    } else {
+                    }
                 } else {
+                    $_SESSION["ERROR_DATA_OUT"] = "Esse token não é mais válido";
+                    header('Location: ' . PROTOCOLO . '://' . PATH . '/');
                 }
             } else {
-                $_SESSION["ERROR_DATA_OUT"] = "Esse token não é mais válido";
-                header('Location: ' . PROTOCOLO . '://' . PATH . '/');
+                header('Location: ' . PROTOCOLO . '://' . PATH . '/error');
             }
         } else {
             header('Location: ' . PROTOCOLO . '://' . PATH . '/error');
@@ -261,6 +273,7 @@ class AccountsController
                         $_SESSION['usuario'] = $resultado[0]['usuario'];
                         $_SESSION['nome_full'] = $resultado[0]['nome'] . " " . $resultado[0]['sobrenome'];
                         $_SESSION['permissao'] = $resultado[0]['permissao'];
+
                         header('Location:' . PROTOCOLO . '://' . PATH . '/u/profile/' . $_SESSION['usuario'] . '');
                     }
                 }
