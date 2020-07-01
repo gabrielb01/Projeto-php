@@ -261,6 +261,7 @@ class AccountsController
 
                 $resultado = $this->database->query("SELECT * FROM USUARIO WHERE email=:email", $parametro);
 
+
                 if (!$resultado) {
                     $_SESSION["ERROR_DATA_OUT"] = "E-mail ou senha esta incorreta";
                     header('Location:' . PROTOCOLO . '://' . PATH . '/accounts/login');
@@ -269,12 +270,19 @@ class AccountsController
                         $_SESSION["ERROR_DATA_OUT"] = "E-mail ou senha esta incorreta";
                         header('Location:' . PROTOCOLO . '://' . PATH . '/accounts/login');
                     } else {
-                        $_SESSION['user'] = $resultado[0]['id_usuario'];
-                        $_SESSION['usuario'] = $resultado[0]['usuario'];
-                        $_SESSION['nome_full'] = $resultado[0]['nome'] . " " . $resultado[0]['sobrenome'];
-                        $_SESSION['permissao'] = $resultado[0]['permissao'];
 
-                        header('Location:' . PROTOCOLO . '://' . PATH . '/u/profile/' . $_SESSION['usuario'] . '');
+
+                        if ($resultado[0]['ativo'] == 0) {
+                            $_SESSION["ERROR_DATA_OUT"] = "Para fazer o login, primeiramente faça a ativação da conta, nós enviamos o link de ativação para <b>".$email.'</b>';
+                            header('Location:' . PROTOCOLO . '://' . PATH . '/accounts/login');
+                        } else {
+                            $_SESSION['user'] = $resultado[0]['id_usuario'];
+                            $_SESSION['usuario'] = $resultado[0]['usuario'];
+                            $_SESSION['nome_full'] = $resultado[0]['nome'] . " " . $resultado[0]['sobrenome'];
+                            $_SESSION['permissao'] = $resultado[0]['permissao'];
+    
+                            header('Location:' . PROTOCOLO . '://' . PATH . '/u/profile/' . $_SESSION['usuario'] . '');
+                        }
                     }
                 }
             }

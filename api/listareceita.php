@@ -1,6 +1,5 @@
 <?php
 
-if (isset($_SESSION['user'])) {
 
 require_once "../config.php";
 
@@ -53,4 +52,3 @@ if ($_POST['type'] == "remove") {
     }
 }
 
-}

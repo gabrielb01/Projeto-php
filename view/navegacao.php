@@ -60,9 +60,9 @@ if (!defined('INDEX')) {
       </ul>
       <?php if (isset($_SESSION['user'])) : ?>
 
-        <form class="form-inline" method="post" action="<?= PROTOCOLO ?>://<?= PATH ?>/receita/Search">
+        <form class="form-inline form" method="post" action="<?= PROTOCOLO ?>://<?= PATH ?>/receita/Search">
           <input class="form-control ml-4 mr-2" name="search" placeholder="Buscar..." required>
-          <input type="submit" class="btn btn-outline-dark" value="Pesquisar">
+          <input type="submit" class="btn btn-outline-dark btn-submit" value="Pesquisar">
         </form>
       <?php endif; ?>
     </div>

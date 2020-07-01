@@ -27,6 +27,7 @@ $(document).ready(function() {
     $("#salvarReceita").click(function() {
         let url = `${PROTOCOLO}://${PATH}/api/listareceita.php`;
         let data = { identificacao:$(this).attr("identificacao"), type: $(this).attr("type"),user: $(this).attr("user") };
+
         ajax(data, url, "msg-receita" );
         setTimeout(function() {
             location.reload();

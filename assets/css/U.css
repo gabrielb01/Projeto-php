@@ -2,6 +2,11 @@
 
 /* usuário home */
 
+
+a {
+    text-decoration: none !important;
+}
+
 .background-img {
     width: 100vw;
     height: 400px;

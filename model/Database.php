@@ -3,12 +3,12 @@
 class Database 
 {
     
-    public $pdo;
+    private $pdo;
 
 
 
 
-    function query($query, $parametro = null)
+    public function query($query, $parametro = null)
     {
         try {
             $this->pdo = new PDO('mysql:host=' . HOST . ';dbname=' . DBNAME, USER, PASS);
@@ -32,7 +32,7 @@ class Database
     }
 
 
-    function exe_query($query,$parametro=null)
+    public function exe_query($query,$parametro=null)
 
     {
         

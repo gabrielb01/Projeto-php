@@ -33,6 +33,7 @@ $pdo->query("CREATE TABLE USUARIO(
     token                   varchar(255),
     token_ativo             char(1) DEFAULT 0,
     token_ativo_password    char(1) DEFAULT 0,
+    usuarios_seguindos      text DEFAULT '',
     foto_perfil             varchar(255));");
 
 

@@ -1,8 +1,8 @@
 <?php
 
-    if (!defined('INDEX')) {
-      die("Erro no sistema!");
-    }
+if (!defined('INDEX')) {
+    die("Erro no sistema!");
+}
 ?>
 <br><br>
 
@@ -28,8 +28,8 @@
                                     <?php endif; ?>
 
                                     <?php if ($_SESSION['user'] != $this->receita[0]['id_usuario']) : ?>
-                                        <li class="list-group-item" id="salvarReceita" type="<?= (in_array($this->receita[0]['id_receita'],$this->receitas_salvas) ? "remove" : "add")  ?>" user="<?=$_SESSION['user']?>" identificacao="<?=$this->receita[0]['id_receita']?>">
-                                        <?= (in_array($this->receita[0]['id_receita'],$this->receitas_salvas) ? "Remove Receita" : "Salva Receita")  ?></li>
+                                        <li class="list-group-item" id="salvarReceita" type="<?= (in_array($this->receita[0]['id_receita'], $this->receitas_salvas) ? "remove" : "add")  ?>" user="<?= $_SESSION['user'] ?>" identificacao="<?= $this->receita[0]['id_receita'] ?>">
+                                            <?= (in_array($this->receita[0]['id_receita'], $this->receitas_salvas) ? "Remove Receita" : "Salva Receita")  ?></li>
                                     <?php endif; ?>
 
                                 </ul>
@@ -58,7 +58,10 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <p id="msg-receita"></p>
+                <br><br>
+                <div class="alert alert-success">
+                    <p id="msg-receita"></p>
+                </div>
             </div>
         </div>
     </div>
