@@ -198,12 +198,12 @@ class AccountsController
                         header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
                    } else {
                        $usuarioDB = $this->database->query("SELECT usuario FROM USUARIO WHERE usuario=:usuario",[':usuario' => $usuario]);
-                    if (count($usuarioDB >0)) {
+                    if (count($usuarioDB) > 0) {
                         $_SESSION["ERROR_DATA_OUT"] = "Este usuário já estar sendo usado por outra pessoa!";
                         header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
                    } else {
                          if (strlen($senha) < 8) {
-                         $_SESSION["ERROR_DATA_PASSWORD"] = "A senha deve contem no minimo 8 caracteres";
+                         $_SESSION["ERROR_DATA_OUT"] = "A senha deve contem no mínimo 8 caracteres";
                          header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
                          } else {
                              if (isset($_POST['radio'])) {
