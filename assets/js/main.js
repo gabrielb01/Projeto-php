@@ -3,25 +3,11 @@ $(document).ready(function() {
     const PROTOCOLO = "http";
     const PATH = window.location.hostname +"/vegan";
     let show = false;
+    let email = false;
+    let usuario = false;
 
 
 
-    
-    
-    $('#usuario').blur(function() {
-       if ($('#usuario').val() !="") {
-           let url = `${PROTOCOLO}://${PATH}/api/verificarusuario.php`;
-           let data = { data: $('#usuario').val(), tipo: "usuario" };
-           ajax(data, url, "msg-usuario" );
-       }
-    });
-
-
-    $('#email').blur(function() {
-        let url = `${PROTOCOLO}://${PATH}/api/verificarusuario.php`;
-        let data = { data: $('#email').val(), tipo: "email" };
-        ajax(data, url, "msg-email" );
-    });
 
 
     $("#salvarReceita").click(function() {
@@ -29,6 +15,7 @@ $(document).ready(function() {
         let data = { identificacao:$(this).attr("identificacao"), type: $(this).attr("type"),user: $(this).attr("user") };
 
         ajax(data, url, "msg-receita" );
+        $("#msg-receita").css({display: "block"});
         setTimeout(function() {
             location.reload();
         },2000);
@@ -164,7 +151,11 @@ function ajax(data, url, obj)
         type: "post",
         data:data,
         success: function(res) {
-            $("#"+obj).html(res);
+            if (res=="false") {
+                return false;
+            } else {
+                $("#"+obj).html(res);
+            }
         }
     });
 }

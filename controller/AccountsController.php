@@ -186,53 +186,66 @@ class AccountsController
                 $usuario = trim(limpar($_POST['usuario']));
                 $nome = trim(limpar($_POST['nome']));
                 $sobrenome = trim(limpar($_POST['sobrenome']));
+                
 
                 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $_SESSION["ERROR_DATA_OUT"] = "Insira um e-mail válido!";
                     header('Location:' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
                 } else {
-                    if (strlen($senha) < 8) {
-                        $_SESSION["ERROR_DATA_PASSWORD"] = "A senha deve contem no minimo 8 caracteres";
+                    $emailDB = $this->database->query("SELECT email FROM USUARIO WHERE email=:email",[':email' => $email]);
+                   if (count($emailDB) > 0) {
+                        $_SESSION["ERROR_DATA_OUT"] = "Este E-mail já estar sendo usado por outro usuário!";
                         header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
-                    } else {
-                        if (isset($_POST['radio'])) {
-                            $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-                            $token = md5($email);
-                            $parametro = [
-                                ":usuario" => $usuario,
-                                ":email" => $email,
-                                ":permissao" => "user",
-                                ":senha" => $senha,
-                                ":nome" => $nome,
-                                ":sobrenome" => $sobrenome,
-                                ":sexo" => $_POST['radio'],
-                                ":token" => $token,
-                                ":token_ativo" => "1",
-                                ":foto_perfil" => '/img/default/default.png'
-                            ];
-
-                            $this->database->exe_query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,token,token_ativo,foto_perfil) 
-                            VALUES(:usuario,:email,:permissao,:senha,:nome,:sobrenome,:sexo,:token,:token_ativo, :foto_perfil)", $parametro);
-                            $_SESSION["CADASTRO_SUCESSO"] = "Cadastro feito com sucesso, verifique seu e-mail para fazer a confirmação da conta!";
-
-                            $texto_email = "<h4>Parabéns, você acabou de criar sua conta no Conscious Vegan <b>= )</b>.</h4>
-                                            <p>Primeiramente, vamos confirmar sua conta de E-mail.</p>
-                                            <p>Então, para isso clique no link abaixo.</p>
-                                            <p><a href='" . PROTOCOLO . "://" . PATH . "/accounts/verificar/" . $token . "'>confirmar conta.</a></p>";
-
-
-                            $mail = new Email(HOST_EMAIL, EMAIL, PASSWORD_EMAIL, NAME_HOST);
-                            $mail->addAdress($email, $nome . ' ' . $sobrenome);
-                            $mail->formatarEmail("Conta criada com sucesso", $texto_email);
-                            $mail->enviarEmail();
-
-
-                            header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
-                        } else {
-                            $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
-                            header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
-                        }
-                    }
+                   } else {
+                       $usuarioDB = $this->database->query("SELECT usuario FROM USUARIO WHERE usuario=:usuario",[':usuario' => $usuario]);
+                    if (count($usuarioDB >0)) {
+                        $_SESSION["ERROR_DATA_OUT"] = "Este usuário já estar sendo usado por outra pessoa!";
+                        header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
+                   } else {
+                         if (strlen($senha) < 8) {
+                         $_SESSION["ERROR_DATA_PASSWORD"] = "A senha deve contem no minimo 8 caracteres";
+                         header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
+                         } else {
+                             if (isset($_POST['radio'])) {
+                                 $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+                                 $token = md5($email);
+                                 $parametro = [
+                                     ":usuario" => $usuario,
+                                     ":email" => $email,
+                                     ":permissao" => "user",
+                                     ":senha" => $senha,
+                                     ":nome" => $nome,
+                                     ":sobrenome" => $sobrenome,
+                                     ":sexo" => $_POST['radio'],
+                                     ":token" => $token,
+                                     ":token_ativo" => "1",
+                                     ":foto_perfil" => '/img/default/default.png'
+                                 ];
+ 
+                                 $this->database->exe_query("INSERT INTO USUARIO(usuario,email,permissao,senha,nome,sobrenome,sexo,token,token_ativo,foto_perfil) 
+                                 VALUES(:usuario,:email,:permissao,:senha,:nome,:sobrenome,:sexo,:token,:token_ativo, :foto_perfil)", $parametro);
+                                 $_SESSION["CADASTRO_SUCESSO"] = "Cadastro feito com sucesso, verifique seu e-mail para fazer a confirmação da conta!";
+ 
+                                 $texto_email = "<h4>Parabéns, você acabou de criar sua conta no Conscious Vegan <b>= )</b>.</h4>
+                                                 <p>Primeiramente, vamos confirmar sua conta de E-mail.</p>
+                                                 <p>Então, para isso clique no link abaixo.</p>
+                                                 <p><a href='" . PROTOCOLO . "://" . PATH . "/accounts/verificar/" . $token . "'>confirmar conta.</a></p>";
+ 
+ 
+                                 $mail = new Email(HOST_EMAIL, EMAIL, PASSWORD_EMAIL, NAME_HOST);
+                                 $mail->addAdress($email, $nome . ' ' . $sobrenome);
+                                 $mail->formatarEmail("Conta criada com sucesso", $texto_email);
+                                 $mail->enviarEmail();
+ 
+ 
+                                 header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
+                             } else {
+                                 $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
+                                 header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/cadastro');
+                             }
+                         }
+                     }
+                   }
                 }
             } else {
                 $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";

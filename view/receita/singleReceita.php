@@ -59,9 +59,8 @@ if (!defined('INDEX')) {
             </div>
             <div class="col-md-5">
                 <br><br>
-                <div class="alert alert-success">
-                    <p id="msg-receita"></p>
-                </div>
+                <div id="msg-receita" class="alert alert-success"></div>
+            
             </div>
         </div>
     </div>
