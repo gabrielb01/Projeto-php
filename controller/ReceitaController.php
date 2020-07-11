@@ -59,9 +59,14 @@ class ReceitaController
 
     public function new()
     {
-        $this->view = new View("receita/novareceita");
-        $this->view->database = $this->database;
-        $this->view->render($this->title, $this->style);
+        $url = $GLOBALS['url'];
+        if (!isset($url[2])) {
+            $this->view = new View("receita/novareceita");
+            $this->view->database = $this->database;
+            $this->view->render($this->title, $this->style);
+        } else {
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+        }
     }
 
 
@@ -116,17 +121,23 @@ class ReceitaController
     public function Search()
     {
 
-        $search = trim(limpar($_POST['search']));
+        $url = $GLOBALS['url'];
 
-        $receitas = $this->database->query("SELECT * FROM RECEITA WHERE titulo LIKE '%" . $search . "%'");
+        if (!isset($url[2])) {
+            $search = trim(limpar($_POST['search']));
 
-        if (!count($receitas) == 0) {
-            $this->view = new View("receita/searchreceita");
-            $this->view->receitas = $receitas;
-            $this->view->render($this->title, $this->style);
+            $receitas = $this->database->query("SELECT * FROM RECEITA WHERE titulo LIKE '%" . $search . "%'");
+
+            if (!count($receitas) == 0) {
+                $this->view = new View("receita/searchreceita");
+                $this->view->receitas = $receitas;
+                $this->view->render($this->title, $this->style);
+            } else {
+                $this->view = new View("receita/notfoundreceita");
+                $this->view->render($this->title, $this->style);
+            }
         } else {
-            $this->view = new View("receita/notfoundreceita");
-            $this->view->render($this->title, $this->style);
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
         }
     }
 
@@ -134,56 +145,62 @@ class ReceitaController
 
     public function validarNovaReceita()
     {
-        if ($_POST) {
-            if ($_POST['nomeReceita'] == "" || $_POST['ingredientes'] == "" || $_POST['descricao'] == "") {
-                $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
-                header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
-            } else {
+        $url = $GLOBALS['url'];
 
-                $nomeReceita = trim(limpar($_POST['nomeReceita']));
-                $ingredientes = trim(limpar($_POST['ingredientes']));
-                $descricao = trim(limpar($_POST['descricao']));
-
-                $type_in = ['png', 'jpg', 'jpeg'];
-                $tipo_image = explode("/", $_FILES["fotoReceita"]["type"]);
-                $tipo_image[1] = strtolower($tipo_image[1]);
-                if ($tipo_image[0] != "image") {
-                    $_SESSION["ERROR_DATA_OUT"] = "Escolha Imagem do tipo png ou jpg";
+        if (!isset($url[2])) {
+            if ($_POST) {
+                if ($_POST['nomeReceita'] == "" || $_POST['ingredientes'] == "" || $_POST['descricao'] == "") {
+                    $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
                     header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
                 } else {
-                    if (!in_array($tipo_image[1], $type_in)) {
-                        $_SESSION["ERROR_DATA_OUT"] = "Escolha Imagem do tipo png ou jpg ";
+
+                    $nomeReceita = trim(limpar($_POST['nomeReceita']));
+                    $ingredientes = trim(limpar($_POST['ingredientes']));
+                    $descricao = trim(limpar($_POST['descricao']));
+
+                    $type_in = ['png', 'jpg', 'jpeg'];
+                    $tipo_image = explode("/", $_FILES["fotoReceita"]["type"]);
+                    $tipo_image[1] = strtolower($tipo_image[1]);
+                    if ($tipo_image[0] != "image") {
+                        $_SESSION["ERROR_DATA_OUT"] = "Escolha Imagem do tipo png ou jpg";
                         header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
                     } else {
-                        $img_receita = md5(strval(date("Y-m-d H:i:s")) . $_FILES['fotoReceita']['name']);
-                        $destino = "img/receita/";
-                        $novoNome = $img_receita . '.' . $tipo_image[1];
-                        $arquivo_tmp = $_FILES['fotoReceita']['tmp_name'];
-
-                        if (move_uploaded_file($arquivo_tmp, $destino . $novoNome)) {
-                            $parametros = [
-                                ':titulo'   => $nomeReceita,
-                                ':ingredientes' => $ingredientes,
-                                ':mododefazer'    => $descricao,
-                                ':foto_receita' => $destino . $novoNome,
-                                ':categoria'    => $_POST['categoria'],
-                                ':criando_em'   =>  date("Y-m-d H:i:s"),
-                                ':id_usuario'  => $_SESSION['user']
-                            ];
-
-                            $this->database->exe_query("INSERT INTO RECEITA(titulo,ingredientes,mododefazer,foto_receita,categoria,criando_em,id_usuario)
-                            VALUES(:titulo,:ingredientes,:mododefazer,:foto_receita,:categoria,:criando_em,:id_usuario)", $parametros);
-
-
-
-                            $_SESSION["CADASTRO_SUCESSO"] = "Receita adicionada com sucesso!";
-                            header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/detalhes/' . $_SESSION['user']);
-                        } else {
-                            $_SESSION["ERROR_DATA_OUT"] = "Erro ao tentar enviar a imagem, tente novamente!";
+                        if (!in_array($tipo_image[1], $type_in)) {
+                            $_SESSION["ERROR_DATA_OUT"] = "Escolha Imagem do tipo png ou jpg ";
                             header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
+                        } else {
+                            $img_receita = md5(strval(date("Y-m-d H:i:s")) . $_FILES['fotoReceita']['name']);
+                            $destino = "img/receita/";
+                            $novoNome = $img_receita . '.' . $tipo_image[1];
+                            $arquivo_tmp = $_FILES['fotoReceita']['tmp_name'];
+
+                            if (move_uploaded_file($arquivo_tmp, $destino . $novoNome)) {
+                                $parametros = [
+                                    ':titulo'   => $nomeReceita,
+                                    ':ingredientes' => $ingredientes,
+                                    ':mododefazer'    => $descricao,
+                                    ':foto_receita' => $destino . $novoNome,
+                                    ':categoria'    => $_POST['categoria'],
+                                    ':criando_em'   =>  date("Y-m-d H:i:s"),
+                                    ':id_usuario'  => $_SESSION['user']
+                                ];
+
+                                $this->database->exe_query("INSERT INTO RECEITA(titulo,ingredientes,mododefazer,foto_receita,categoria,criando_em,id_usuario)
+                                VALUES(:titulo,:ingredientes,:mododefazer,:foto_receita,:categoria,:criando_em,:id_usuario)", $parametros);
+
+
+
+                                $_SESSION["CADASTRO_SUCESSO"] = "Receita adicionada com sucesso!";
+                                header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/detalhes/' . $_SESSION['user']);
+                            } else {
+                                $_SESSION["ERROR_DATA_OUT"] = "Erro ao tentar enviar a imagem, tente novamente!";
+                                header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
+                            }
                         }
                     }
                 }
+            } else {
+                header("Location:" . PROTOCOLO . "://" . PATH . "/error");
             }
         } else {
             header("Location:" . PROTOCOLO . "://" . PATH . "/error");

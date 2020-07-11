@@ -2,7 +2,7 @@
 
 
 if (!defined('INDEX')) {
-  die("Erro no sistema!");
+    die("Erro no sistema!");
 }
 
 
@@ -45,8 +45,14 @@ class CategoriaController
 
     public function new()
     {
-        $this->view = new View("categoria/novaCategoria");
-        $this->view->render($this->title, $this->style);
+        $url = $GLOBALS['url'];
+
+        if (!isset($url[2])) {
+            $this->view = new View("categoria/novaCategoria");
+            $this->view->render($this->title, $this->style);
+        } else {
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+        }
     }
 
 
@@ -84,33 +90,39 @@ class CategoriaController
 
     public function validarNovaCategoria()
     {
-        if ($_POST) {
-            if ($_POST['categoria'] == "" || $_POST['descricao'] == "") {
-                $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
-                header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria/new');
-            } else {
+        $url = $GLOBALS['url'];
 
-                $categoria = trim(limpar($_POST['categoria']));
-                $descricao = trim(limpar($_POST['descricao']));
-
-                $parametro = [
-                    ":categoria" => $categoria
-                ];
-
-                $resultado = $this->database->query("SELECT nome_categoria FROM CATEGORIA WHERE nome_categoria=:categoria", $parametro);
-
-                if (count($resultado) != 0) {
-                    $_SESSION["ERROR_DATA_OUT"] = "Está categoria já existem, escolha outra nome de categoria!";
+        if (!isset($url[2])) {
+            if ($_POST) {
+                if ($_POST['categoria'] == "" || $_POST['descricao'] == "") {
+                    $_SESSION["ERROR_DATA_OUT"] = "insira todos os dados";
                     header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria/new');
                 } else {
+
+                    $categoria = trim(limpar($_POST['categoria']));
+                    $descricao = trim(limpar($_POST['descricao']));
+
                     $parametro = [
-                        ":categoria" => $categoria,
-                        ":descricao" => $descricao
+                        ":categoria" => $categoria
                     ];
 
-                    $this->database->exe_query("INSERT INTO CATEGORIA(nome_categoria,descricao) VALUES (:categoria,:descricao)", $parametro);
-                    header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
+                    $resultado = $this->database->query("SELECT nome_categoria FROM CATEGORIA WHERE nome_categoria=:categoria", $parametro);
+
+                    if (count($resultado) != 0) {
+                        $_SESSION["ERROR_DATA_OUT"] = "Está categoria já existem, escolha outra nome de categoria!";
+                        header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria/new');
+                    } else {
+                        $parametro = [
+                            ":categoria" => $categoria,
+                            ":descricao" => $descricao
+                        ];
+
+                        $this->database->exe_query("INSERT INTO CATEGORIA(nome_categoria,descricao) VALUES (:categoria,:descricao)", $parametro);
+                        header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
+                    }
                 }
+            } else {
+                header("Location:" . PROTOCOLO . "://" . PATH . "/error");
             }
         } else {
             header("Location:" . PROTOCOLO . "://" . PATH . "/error");
@@ -155,20 +167,28 @@ class CategoriaController
     public function excluir($id)
     {
 
-        if (isset($_SESSION['user']) && isset($_SESSION['permissao']) && $_SESSION['permissao'] == "user;admin") {
-            $categoria = $this->database->query("SELECT nome_categoria FROM CATEGORIA WHERE id_categoria=:id",[":id" => $id]);
-            $resultado = $this->database->query("SELECT titulo FROM RECEITA WHERE categoria=:categoria",[':categoria' =>$categoria[0]['nome_categoria']]);
-            if (count($resultado)==0) {
-                $parametro = [
-                    ":id"   => $id
-                ];
-    
-                $this->database->exe_query("DELETE FROM CATEGORIA WHERE id_categoria=:id", $parametro);
-                header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
+        if (isset($id)) {
+            if (isset($_SESSION['user']) && isset($_SESSION['permissao']) && $_SESSION['permissao'] == "user;admin") {
+                $categoria = $this->database->query("SELECT nome_categoria FROM CATEGORIA WHERE id_categoria=:id", [":id" => $id]);
+
+                if (count($categoria) != 0) {
+                    $resultado = $this->database->query("SELECT titulo FROM RECEITA WHERE categoria=:categoria", [':categoria' => $categoria[0]['nome_categoria']]);
+                    if (count($resultado) == 0) {
+                        $parametro = [
+                            ":id"   => $id
+                        ];
+
+                        $this->database->exe_query("DELETE FROM CATEGORIA WHERE id_categoria=:id", $parametro);
+                        header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
+                    } else {
+                        $_SESSION['ERROR_DATA_OUT'] = "Você não pode excluir uma categoria com receitas cadastradas!";
+                        header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
+                    }
+                } else {
+                    header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+                }
             } else {
-                $_SESSION['ERROR_DATA_OUT'] ="Você não pode excluir uma categoria com receitas cadastradas!";
-                header('Location: ' . PROTOCOLO . '://' . PATH . '/categoria');
-                
+                header("Location:" . PROTOCOLO . "://" . PATH . "/error");
             }
         } else {
             header("Location:" . PROTOCOLO . "://" . PATH . "/error");

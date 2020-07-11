@@ -13,6 +13,8 @@ spl_autoload_register(function($className) {
 
 $url = (isset($_GET['url']) ? $_GET['url'] : "");
 
+$GLOBALS['url'] = $url;
+
 define("INDEX",true);
 
 if ($url!=""){
