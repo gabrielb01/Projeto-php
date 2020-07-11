@@ -18,8 +18,9 @@ class ReceitaController
         $this->database = new Database();
 
         if (!isset($_SESSION['user'])) {
-            $_SESSION['ERROR_DATA_OUT'] ="Faça o login para ver as receitas!";
+            $_SESSION["ERROR_DATA_OUT"] ="Faça o login para ver as receitas!";
             header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
+            exit;
         }
 
     }

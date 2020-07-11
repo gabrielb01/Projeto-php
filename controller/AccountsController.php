@@ -73,7 +73,7 @@ class AccountsController
                 $mail->addAdress($email, $resultado[0]['nome'] . ' ' . $resultado[0]['sobrenome']);
                 $mail->formatarEmail("Conscious Vegan - Redefinição de senha", $texto_email);
                 if ($mail->enviarEmail()) {
-                    $_SESSION['CADASTRO_SUCESSO'] = "Um e-mail foi enviado para " . $email . " com o link para redefinição da senha.";
+                    $_SESSION['CADASTRO_SUCESSO'] = "Um e-mail foi enviado para <b>" . $email . "</b> com o link para redefinição da senha.";
                     header('Location: ' . PROTOCOLO . '://' . PATH . '/');
                 } else {
                     $_SESSION['ERROR_DATA_OUT'] = "Erro ao tentar enviar o e-mail!";
