@@ -5,7 +5,7 @@
       die("Erro no sistema!");
     }
 ?>
-<div class="container">
+<div class="container mt-4">
     <div class="row">
         <?php
         foreach ($this->dados as $receita) :

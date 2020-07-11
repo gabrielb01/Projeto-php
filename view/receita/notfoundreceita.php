@@ -4,4 +4,4 @@
       die("Erro no sistema!");
     }
 ?>
-<h2>Nenhum resultado encontrado!</h2>
+<h2 class="m-5">Nenhum resultado encontrado!</h2>

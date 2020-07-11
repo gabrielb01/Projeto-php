@@ -3,6 +3,13 @@
     if (!defined('INDEX')) {
       die("Erro no sistema!");
     }
+
+
+    $paths = ["editar-perfil","editar-usuario", "editar-email" ,"editar-senha","excluir-conta"];
+
+    if(!in_array($this->acao,$paths)) {
+        header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+    }
 ?>
 <div class="container-flex">
     <div class="container-flex-left">
@@ -13,7 +20,6 @@
                 <a class="list-group-item list-group-item-action <?= $this->acao == "editar-email" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-email">Editar Email</a>
                 <a class="list-group-item list-group-item-action <?= $this->acao == "editar-senha" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/editar-senha">Editar Senha</a>
                 <a class="list-group-item list-group-item-action <?= $this->acao == "excluir-conta" ? "active" : "" ?>" href="<?= PROTOCOLO ?>://<?= PATH ?>/u/edit/excluir-conta">Excluir Conta</a>
-
             </div>
         </div>
     </div>

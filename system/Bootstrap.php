@@ -30,9 +30,13 @@ Class Bootstrap
                     $acao = $url[1];
                     if (method_exists($controller,$acao)) {
                         if (!isset($url[2])) {
-                            $controller->$acao();
+                            $controller->$acao(null);
                         } else {
-                            $controller->$acao($url[2]);
+                            if (!isset($url[3])) {
+                                $controller->$acao($url[2]);
+                            } else {
+                                header("Location:".PROTOCOLO."://".PATH."/error");
+                            }
                         }
                     } else {
                         header("Location:".PROTOCOLO."://".PATH."/error");

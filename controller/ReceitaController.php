@@ -2,7 +2,7 @@
 
 
 if (!defined('INDEX')) {
-  die("Erro no sistema!");
+    die("Erro no sistema!");
 }
 
 class ReceitaController
@@ -18,14 +18,13 @@ class ReceitaController
         $this->database = new Database();
 
         if (!isset($_SESSION['user'])) {
-            $_SESSION["ERROR_DATA_OUT"] ="Faça o login para ver as receitas!";
+            $_SESSION["ERROR_DATA_OUT"] = "Faça o login para ver as receitas!";
             header('Location: ' . PROTOCOLO . '://' . PATH . '/accounts/login');
             exit;
         }
-
     }
 
-    
+
 
     public function index()
     {
@@ -35,42 +34,50 @@ class ReceitaController
 
         $this->view = new View("receita/receita");
         $this->view->receitas = $receitas;
-        $this->view->render($this->title,$this->style);
+        $this->view->render($this->title, $this->style);
     }
 
     public function detalhes($id)
     {
         //Mostrar apenas as receitas adicionadas pelo o usuário
 
-        $receitas = $this->database->query("SELECT * FROM RECEITA WHERE id_usuario=:id ORDER BY criando_em DESC", [':id' => $id]);
+        if (isset($id)) {
+            $receitas = $this->database->query("SELECT * FROM RECEITA WHERE id_usuario=:id ORDER BY criando_em DESC", [':id' => $id]);
 
-        $this->view = new View("receita/receitas");
-        $this->view->receitas = $receitas;
-        $this->view->id = $id;
-        $this->view->render($this->title,$this->style);
+            if (count($receitas) != 0) {
+                $this->view = new View("receita/receitas");
+                $this->view->receitas = $receitas;
+                $this->view->id = $id;
+                $this->view->render($this->title, $this->style);
+            } else {
+                header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+            }
+        } else {
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+        }
     }
 
     public function new()
     {
         $this->view = new View("receita/novareceita");
         $this->view->database = $this->database;
-        $this->view->render($this->title,$this->style);
+        $this->view->render($this->title, $this->style);
     }
 
 
     public function single($id)
     {
         //Mostrar uma única receita
-        
+
 
         $receita = $this->database->query("SELECT * FROM RECEITA WHERE id_receita=:id", [':id' => $id]);
 
-        if (count($receita)==0) { 
-            header("Location:".PROTOCOLO."://".PATH."/error");
+        if (count($receita) == 0) {
+            header("Location:" . PROTOCOLO . "://" . PATH . "/error");
         }
 
         $this->title = $receita[0]['titulo'];
-        
+
         $criador = $this->database->query("SELECT usuario,nome,sobrenome FROM USUARIO WHERE id_usuario=:id", [":id" => $receita[0]['id_usuario']]);
 
         $ingredientes = explode(',', $receita[0]['ingredientes']);
@@ -85,8 +92,7 @@ class ReceitaController
         $this->view->criador = $criador;
         $this->view->ingredientes = $ingredientes;
         $this->view->receitas_salvas = $receitas_salvas;
-        $this->view->render($this->title,$this->style);
-        
+        $this->view->render($this->title, $this->style);
     }
 
 
@@ -104,7 +110,7 @@ class ReceitaController
         $this->view->receita = $receita;
         $this->view->ingredientes = $ingredientes;
         $this->view->database = $this->database;
-        $this->view->render($this->title,$this->style);
+        $this->view->render($this->title, $this->style);
     }
 
     public function Search()
@@ -117,15 +123,11 @@ class ReceitaController
         if (!count($receitas) == 0) {
             $this->view = new View("receita/searchreceita");
             $this->view->receitas = $receitas;
-            $this->view->render($this->title,$this->style);
+            $this->view->render($this->title, $this->style);
         } else {
             $this->view = new View("receita/notfoundreceita");
-            $this->view->render($this->title,$this->style);
-            
+            $this->view->render($this->title, $this->style);
         }
-
-
-        
     }
 
 
@@ -175,7 +177,7 @@ class ReceitaController
 
 
                             $_SESSION["CADASTRO_SUCESSO"] = "Receita adicionada com sucesso!";
-                            header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/detalhes/'.$_SESSION['user']);
+                            header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/detalhes/' . $_SESSION['user']);
                         } else {
                             $_SESSION["ERROR_DATA_OUT"] = "Erro ao tentar enviar a imagem, tente novamente!";
                             header('Location: ' . PROTOCOLO . '://' . PATH . '/receita/new');
@@ -267,15 +269,23 @@ class ReceitaController
 
     public function excluir($id)
     {
-        $user = $this->database->query("SELECT id_usuario FROM RECEITA WHERE id_receita=:id", [":id" => $id]);
+        if ($id != null) {
+            $user = $this->database->query("SELECT id_usuario FROM RECEITA WHERE id_receita=:id", [":id" => $id]);
 
-        if (isset($_SESSION['user']) && $user[0]['id_usuario'] == $_SESSION['user']) {
-            $parametro = [
-                ":id"   => $id
-            ];
+            if (count($user) == 1) {
+                if (isset($_SESSION['user']) && $user[0]['id_usuario'] == $_SESSION['user']) {
+                    $parametro = [
+                        ":id"   => $id
+                    ];
 
-            $this->database->exe_query("DELETE FROM RECEITA WHERE id_receita=:id", $parametro);
-            header('Location: ' . PROTOCOLO . '://' . PATH . '/receita');
+                    $this->database->exe_query("DELETE FROM RECEITA WHERE id_receita=:id", $parametro);
+                    header('Location: ' . PROTOCOLO . '://' . PATH . '/receita');
+                } else {
+                    header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+                }
+            } else {
+                header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+            }
         } else {
             header("Location:" . PROTOCOLO . "://" . PATH . "/error");
         }

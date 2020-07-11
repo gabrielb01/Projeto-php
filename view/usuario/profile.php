@@ -10,7 +10,7 @@ if (!defined('INDEX')) {
         <h3>Perfil</h3>
         <img id="imagemPerfil" width="200px" height="200px" src="<?= PROTOCOLO . '://' . PATH . '/' . $this->dados[0]['foto_perfil'] ?>" />
         <input type="file" name="fotoProfile" accept="image/*" id="fotoPerfil" required /><br>
-        <input type="submit" value="Adicionar" class="btn btn-success ml-5 mt-2"><br>
+        <input type="submit" value="Salvar" class="btn btn-success ml-5 mt-3"><br>
     </form>
 </div>
 

@@ -13,7 +13,7 @@ class ErrorController
     public function index()
     {
         $this->view = new View("error");
-        $this->view->render($this->title,$this->style);
+        $this->view->render("Erro",$this->style);
     }
 
   

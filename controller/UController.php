@@ -21,20 +21,28 @@ class UController
 
         $this->title = $_SESSION['nome_full'];
         $this->database = new Database();
-
     }
 
 
 
     public function profile($usuario)
     {
-        $dados = $this->database->query("SELECT * FROM USUARIO WHERE usuario = :usuario", [":usuario" => $usuario]);
+        if (isset($usuario)) {
+            $dados = $this->database->query("SELECT * FROM USUARIO WHERE usuario = :usuario", [":usuario" => $usuario]);
 
-        $this->title = $_SESSION['nome_full'];
-        $this->view = new View("usuario/profile");
-        $this->view->dados = $dados;
-        $this->view->usuario = $usuario;
-        $this->view->render($this->title, $this->style);
+            if (count($dados) ==1) {
+                $this->title = $_SESSION['nome_full'];
+                $this->view = new View("usuario/profile");
+                $this->view->dados = $dados;
+                $this->view->usuario = $usuario;
+                $this->view->render($this->title, $this->style);
+            } else {
+                header("Location:" . PROTOCOLO . "://" . PATH . "/error");   
+            }
+
+        } else {
+           header("Location:" . PROTOCOLO . "://" . PATH . "/error");
+        }
     }
 
 
@@ -100,9 +108,6 @@ class UController
 
                         $this->database->exe_query("UPDATE USUARIO SET foto_perfil=:foto_perfil WHERE id_usuario=:id_usuario", $parametros);
 
-
-
-                        $_SESSION["CADASTRO_SUCESSO"] = "Foto do perfil alterada com sucesso!";
                         header('Location: ' . PROTOCOLO . '://' . PATH . '/u/profile/' . $_SESSION['usuario']);
                     } else {
                         $_SESSION["ERROR_DATA_OUT"] = "Erro ao tentar alterar a foto do perfil, tente novamente!";
@@ -152,23 +157,22 @@ class UController
 
     public function following()
     {
-        $seguidores = $this->database->query("SELECT usuarios_seguindos FROM USUARIO WHERE id_usuario=:id",[":id" => $_SESSION['user']]);
+        $seguidores = $this->database->query("SELECT usuarios_seguindos FROM USUARIO WHERE id_usuario=:id", [":id" => $_SESSION['user']]);
 
-        if ($seguidores[0]['usuarios_seguindos']=="") {
+        if ($seguidores[0]['usuarios_seguindos'] == "") {
             $this->view = new View('usuario/following');
             $this->view->mensagem = "<h3 class='p-2'>Você ainda não seguiu ninguém</h3>";
             $this->view->render("Seguindo", $this->style);
         } else {
-            $array_data = explode(";" , $seguidores[0]['usuarios_seguindos']);
+            $array_data = explode(";", $seguidores[0]['usuarios_seguindos']);
 
-            $array_data = implode(',',$array_data);
+            $array_data = implode(',', $array_data);
 
             $seguidores = $this->database->query("SELECT nome,sobrenome,usuario,foto_perfil FROM USUARIO WHERE usuario in (:array)", [':array' => $array_data]);
-            
+
             $this->view = new View('usuario/following');
             $this->view->seguidores = $seguidores;
             $this->view->render("Seguindo", $this->style);
-
         }
     }
 
@@ -223,7 +227,8 @@ class UController
                         }
                     }
                 }
-            } else if ($_POST['form'] == "email_c") {
+            }
+            else if ($_POST['form'] == "email_c") {
                 if ($_POST['email'] == "") {
                     $_SESSION["ERROR_DATA_OUT"] = "Nenhum Campo pode ficar em branco!";
                     header('Location: ' . PROTOCOLO . '://' . PATH . '/u/edit/editar-email');
@@ -258,7 +263,8 @@ class UController
                         }
                     }
                 }
-            } else if ($_POST['form'] == "senha_c") {
+            }
+            else if ($_POST['form'] == "senha_c") {
                 if ($_POST['senha'] == "" && $_POST['senha2'] == "" && $_POST['senha_original'] == "") {
                     $_SESSION["ERROR_DATA_OUT"] = "Nenhum Campo pode ficar em branco!";
                     header('Location: ' . PROTOCOLO . '://' . PATH . '/u/edit/editar-senha');
@@ -294,7 +300,8 @@ class UController
                         }
                     }
                 }
-            } else if ($_POST['form'] == "excluir") {
+            }
+            else if ($_POST['form'] == "excluir") {
 
                 if (isset($_SESSION['user'])) {
                     $parametro = [

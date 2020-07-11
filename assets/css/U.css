@@ -9,8 +9,11 @@ a {
 
 .background-img {
     width: 100vw;
-    height: 400px;
+    heig
+    ht: 400px;
 }
+
+
 
 .profile-flex {
     display: flex;
